@@ -1,28 +1,57 @@
 package com.solo.LoLStrategy.user.security;
 
-import java.util.Arrays;
-
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
+
+import com.solo.LoLStrategy.user.CustomUserDetails;
 
 @Component
 public class CustomAuthenticationProvider implements AuthenticationProvider{
+	
+	@Autowired
+	private JpaUserDetailsService userDetailsService;
+	
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	
 
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		String username = authentication.getName();
-		String password = String.valueOf(authentication.getCredentials());
+		String password = authentication.getCredentials().toString();
 		
-		if("john".equals(username) && "12345".equals(password)) {
-			return new UsernamePasswordAuthenticationToken(username, username, Arrays.asList());
+		CustomUserDetails user = userDetailsService.loadUserByUsername(username);
+		
+		switch (user.getUser().getAlgorithm()) {
+		case BCRYPT:
+			return checkPassword(user,password,bCryptPasswordEncoder);
+		}
+		throw new BadCredentialsException("Bad credentials");
+		
+	}
+
+	private Authentication checkPassword(CustomUserDetails user, String rawPassword,
+			PasswordEncoder passwordEncoder) {
+		if(passwordEncoder.matches(rawPassword, user.getPassword())) {
+			System.out.println("비밀번호 인코딩 결과 성공");
+			return new UsernamePasswordAuthenticationToken(
+					user.getUsername(),
+					user.getPassword(),
+					user.getAuthorities()
+					);
 		}else {
-			throw new AuthenticationCredentialsNotFoundException("Error in authentication!");
+			throw new BadCredentialsException("Bad credentials");
 		}
 	}
+
 
 	@Override
 	public boolean supports(Class<?> authentication) {

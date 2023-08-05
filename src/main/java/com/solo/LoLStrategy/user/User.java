@@ -1,26 +1,48 @@
 package com.solo.LoLStrategy.user;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.solo.LoLStrategy.user.security.Authority;
+import com.solo.LoLStrategy.user.security.EncryptionAlgorithm;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
+import lombok.Value;
 
 @Entity
 @Getter
 @Setter
+@ToString
 @Table(name = "user")
 public class User {
 
 	@Id
-	private String id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+	
+	private String userName;
 	private String password;
-	private String authority;
+	
+	@Enumerated(EnumType.STRING)
+	private EncryptionAlgorithm algorithm;
+	
+	@OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
+	private List<Authority> authorities;
+	
 	private String email;
-	private String username;
 	private Date joinDate;
+	
 	
 }
