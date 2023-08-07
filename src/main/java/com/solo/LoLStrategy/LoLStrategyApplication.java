@@ -19,6 +19,7 @@ public class LoLStrategyApplication {
 	}
 	
 	
+	// johh 아이디 생성 
 	@Bean
 	public CommandLineRunner demo(UserRepository userRepository) {
 		return(args)->{

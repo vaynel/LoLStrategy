@@ -22,6 +22,9 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
+	@Autowired
+	private SCryptPasswordEncoder sCryptPasswordEncoder;
+	
 
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -33,6 +36,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 		switch (user.getUser().getAlgorithm()) {
 		case BCRYPT:
 			return checkPassword(user,password,bCryptPasswordEncoder);
+		case SCRYPT:
+			return checkPassword(user,password,sCryptPasswordEncoder);
 		}
 		throw new BadCredentialsException("Bad credentials");
 		
@@ -41,7 +46,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 	private Authentication checkPassword(CustomUserDetails user, String rawPassword,
 			PasswordEncoder passwordEncoder) {
 		if(passwordEncoder.matches(rawPassword, user.getPassword())) {
-			System.out.println("비밀번호 인코딩 결과 성공");
+			System.out.println(user.getUsername()+"님 비밀번호 인코딩 결과 성공");
 			return new UsernamePasswordAuthenticationToken(
 					user.getUsername(),
 					user.getPassword(),

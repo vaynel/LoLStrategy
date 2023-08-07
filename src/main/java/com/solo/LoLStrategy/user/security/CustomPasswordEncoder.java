@@ -13,6 +13,7 @@ public class CustomPasswordEncoder {
 		return new BCryptPasswordEncoder();
 	}
 	
+	@Bean
 	public SCryptPasswordEncoder sCryptPasswordEncoder() {
 		return new SCryptPasswordEncoder();
 	}
