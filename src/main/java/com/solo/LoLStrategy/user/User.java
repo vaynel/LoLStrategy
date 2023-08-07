@@ -33,6 +33,7 @@ public class User {
 	private Integer id;
 	
 	private String userName;
+	private String gameId;
 	private String password;
 	
 	@Enumerated(EnumType.STRING)

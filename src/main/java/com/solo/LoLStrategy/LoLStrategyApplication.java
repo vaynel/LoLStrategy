@@ -17,14 +17,15 @@ public class LoLStrategyApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(LoLStrategyApplication.class, args);
 	}
-	
-	
-	// johh 아이디 생성 
+
+	// johh 아이디 생성
+
 	@Bean
 	public CommandLineRunner demo(UserRepository userRepository) {
-		return(args)->{
+		return (args) -> {
 			User user = new User();
 			user.setId(4);
+			user.setGameId("cammel");
 			user.setUserName("johh");
 			user.setPassword(new BCryptPasswordEncoder().encode("1234"));
 			user.setAlgorithm(EncryptionAlgorithm.BCRYPT);

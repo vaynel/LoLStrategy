@@ -43,8 +43,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 		
 	}
 
-	private Authentication checkPassword(CustomUserDetails user, String rawPassword,
-			PasswordEncoder passwordEncoder) {
+	private Authentication checkPassword(CustomUserDetails user, String rawPassword,PasswordEncoder passwordEncoder) {
 		if(passwordEncoder.matches(rawPassword, user.getPassword())) {
 			System.out.println(user.getUsername()+"님 비밀번호 인코딩 결과 성공");
 			return new UsernamePasswordAuthenticationToken(
@@ -53,6 +52,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 					user.getAuthorities()
 					);
 		}else {
+			System.out.println("로그인 실패");
 			throw new BadCredentialsException("Bad credentials");
 		}
 	}
