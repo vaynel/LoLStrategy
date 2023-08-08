@@ -36,6 +36,8 @@ public class UserController {
 
 	@RequestMapping(value = "/main", method = RequestMethod.GET)
 	public String main(Authentication a, Model model) {
+		log.info(a.getName());
+		
 		model.addAttribute("gameId", a.getName());
 		model.addAttribute("user", userService.findAll());
 		return "main.html";
