@@ -3,20 +3,21 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <title>Login - Shopme Admin</title>
+    <title>Main Page</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
         crossorigin="anonymous" />
 </head>
 <body>
 <div class="container-fluid text-center">
-    <form th:action="@{/login}" method="post" style="max-width: 350px; margin: 0 auto;">
-         
-        <div class="border border-secondary p-3 rounded">
+    <div class="border border-secondary p-3 rounded">
             <p>롤 전략 사이트</p>
+            <ul>
+            	<li>게임 아이디 : <span th:text = "${gameId}"><</span></li>
+            </ul>
             
-        </div>
-    </form>      
+            
+    </div>
 </div>
 </body>
 </html>

@@ -12,8 +12,12 @@ import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.solo.LoLStrategy.user.CustomUserDetails;
+import com.solo.LoLStrategy.user.UserController;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Component
+@Slf4j
 public class CustomAuthenticationProvider implements AuthenticationProvider{
 	
 	@Autowired
@@ -30,6 +34,9 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		String username = authentication.getName();
 		String password = authentication.getCredentials().toString();
+		
+		log.info(username);
+		
 		
 		CustomUserDetails user = userDetailsService.loadUserByUsername(username);
 		

@@ -4,9 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -14,40 +13,38 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class UserController {
 
-	
 	@Autowired
 	private UserService userService;
-	
-	@GetMapping("/")
-	public RedirectView returnToLogin() {
-		return new RedirectView("/login");
-	}
-	
-	@GetMapping("/hello")
+
+	@RequestMapping("/hello")
 	public String hello(Authentication a) {
 		return "hello!";
 	}
 	
-	@GetMapping("/main")
-	public String main(Authentication a,Model model) {
-		
-		model.addAttribute("username", a.getName());
-		model.addAttribute("user", userService.findAll());
-		
-		return "main.html";
+	@RequestMapping(value = "/signup", method = RequestMethod.GET)
+	public String signup() {
+		log.info("회원가입");
+		return "signup.html";
 	}
 	
-	@GetMapping("/login")
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	public String register(User user) {
+		log.info("회원가입을 진행합니다");
+		userService.register(user);
+		return "signup.html";
+	}
+
+	@RequestMapping(value = "/main", method = RequestMethod.GET)
+	public String main(Authentication a, Model model) {
+		model.addAttribute("gameId", a.getName());
+		model.addAttribute("user", userService.findAll());
+		return "main.html";
+	}
+
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login() {
 		log.info("login을 하십시오");
 		return "login.html";
 	}
-	
-	@PostMapping("/login")
-	public RedirectView postLogin() {
-		log.info("login을 시도중입니다.");
-		return new RedirectView("/main");
-	}
-
 
 }

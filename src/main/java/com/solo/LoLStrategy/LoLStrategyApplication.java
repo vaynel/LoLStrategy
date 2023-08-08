@@ -24,7 +24,7 @@ public class LoLStrategyApplication {
 	public CommandLineRunner demo(UserRepository userRepository) {
 		return (args) -> {
 			User user = new User();
-			user.setId(4);
+			user.setId(1);
 			user.setGameId("cammel");
 			user.setUserName("johh");
 			user.setPassword(new BCryptPasswordEncoder().encode("1234"));

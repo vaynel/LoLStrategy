@@ -7,9 +7,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.solo.LoLStrategy.user.CustomUserDetails;
 import com.solo.LoLStrategy.user.User;
+import com.solo.LoLStrategy.user.UserController;
 import com.solo.LoLStrategy.user.UserRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Configuration
+@Slf4j
 public class JpaUserDetailsService implements UserDetailsService {
 
 	@Autowired
@@ -17,7 +21,7 @@ public class JpaUserDetailsService implements UserDetailsService {
 
 	@Override
 	public CustomUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		System.out.println("loadUserByUsername : "+username);
+		log.info("loadUserByUsername : "+username);
 		
 		User user= userRepository
 				.findUserByUserName(username)

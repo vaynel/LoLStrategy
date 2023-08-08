@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type : application/json" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+        crossorigin="anonymous" />
+</head>
+<body>
+<div class="container-fluid text-center">
+    <form th:action="@{/register}" method="POST" style="max-width: 350px; margin: 0 auto;">
+         
+        <div class="border border-secondary p-3 rounded">
+            <p>회원가입</p>
+            <p>
+                <input type="text" name="gameId" class="form-control" placeholder="롤 아이디를 입력하세요 " required autofocus/>
+            </p>
+            <p>
+                <input type="password" name="password" class="form-control" placeholder="비밀번호를 입력하세요" required />
+            </p>
+            <p>
+                <input type="text" name="userName" class="form-control" placeholder="이름을 입력하세요" required />
+            </p>
+            <p>
+                <input type="text" name="email" class="form-control" placeholder="이메일을 입력하세요" required />
+            </p>
+            
+            <p>
+                <input type="submit" value="register" class="btn btn-primary" />
+                <button type="button" th:onclick="|location.href='@{/login}'|" class="btn btn-primary">login</button>
+                <!-- <a th:href="@{/main}" class="btn btn-primary""></a> -->
+            </p>
+        </div>
+    	</form>      
+</div>
+</body>
+</html>

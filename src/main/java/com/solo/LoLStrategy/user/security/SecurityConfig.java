@@ -23,17 +23,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
 	protected void configure(HttpSecurity http) throws Exception{
 		http.addFilterBefore(new RequestValidationFilter(), BasicAuthenticationFilter.class)
 		.authorizeRequests()
-		.anyRequest().
-		permitAll()
-		.and().formLogin()
+		.antMatchers("/login").permitAll()
+		.antMatchers("/signup").permitAll()
+		.anyRequest().authenticated()
+		.and()
+		.formLogin()
 		.loginPage("/login")
-		.defaultSuccessUrl("/main")
-		.and().csrf().disable();
+		.loginProcessingUrl("/login")
+		.usernameParameter("id")
+        .passwordParameter("password")
+		.defaultSuccessUrl("/main");
 		
 //		http.httpBasic();
 //		http.authorizeRequests() 
 //			.anyRequest().authenticated();
 	}
+	
+	
+	
 	
 	
 	
