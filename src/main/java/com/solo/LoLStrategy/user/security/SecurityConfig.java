@@ -34,6 +34,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
         .passwordParameter("password")
 		.defaultSuccessUrl("/main");
 		
+		/*
+		 * http .authorizeRequests()
+		 * .mvcMatchers("/","/css/**","/scripts/**","/plugin/**","/fonts/**")
+		 * .permitAll();
+		 */
+		
 //		http.httpBasic();
 //		http.authorizeRequests() 
 //			.anyRequest().authenticated();

@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-        crossorigin="anonymous" />
+	<meta http-equiv="Content-Type : application/json"	content="text/html; charset=UTF-8">
+	<meta name="viewport"	content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+	<title>Login</title>
+	<link rel="stylesheet"
+		href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+		integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+		crossorigin="anonymous" />
 </head>
 <body>
-<div class="container-fluid text-center">
+	
+	<!-- 1차 시안 -->
+	<div class="container-fluid text-center">
     <form th:action="@{/login}" method="POST" style="max-width: 350px; margin: 0 auto;">
          
         <div class="border border-secondary p-3 rounded">
@@ -26,7 +29,6 @@
             <p>
                 <input type="submit" value="Login" class="btn btn-primary" />
                 <button type="button" th:onclick="|location.href='@{/signup}'|" class="btn btn-primary">SignUp</button>
-                <!-- <a th:href="@{/main}" class="btn btn-primary""></a> -->
             </p>
         </div>
     	</form>      

@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class SummonerV4 {
+public class SummonerDTO {
 	
 	private String accountId;
 	private Integer profileIconId;
