@@ -14,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class LoLAPIService {
+	
+	private static String key = "RGAPI-4e9fc425-4ece-4671-a2e5-705eee760786";
 
 	public void get() {
         // webClient 기본 설정
@@ -32,7 +34,7 @@ public class LoLAPIService {
 		                        .path("l9mBq2tCjP3Tx_Rubz6R40W8sZ0PFaye9o-H1OR5cS-Qkg")
 		                        .build())
 		        .header("Origin", "https://developer.riotgames.com")
-		        .header("X-Riot-Token", "RGAPI-c6eaf9c1-a7bf-41c7-8454-93e6a99f0c11")
+		        .header("X-Riot-Token", key)
 		        .header("Accept-Language", "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7")
 		        .header("Accept-Charset", "application/x-www-form-urlencoded; charset=UTF-8")
 		        .retrieve()
@@ -57,9 +59,9 @@ public class LoLAPIService {
 		        .uri(uriBuilder ->
 		                uriBuilder
 		                        .path(gameId)
+		                        .queryParam("api_key", key)
 		                        .build())
 		        .header("Origin", "https://developer.riotgames.com")
-		        .header("X-Riot-Token", "RGAPI-c6eaf9c1-a7bf-41c7-8454-93e6a99f0c11")
 		        .header("Accept-Language", "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7")
 		        .header("Accept-Charset", "application/x-www-form-urlencoded; charset=UTF-8")
 		        .retrieve()
@@ -87,7 +89,7 @@ public class LoLAPIService {
 		                        .path(SummonerId)
 		                        .build())
 		        .header("Origin", "https://developer.riotgames.com")
-		        .header("X-Riot-Token", "RGAPI-c6eaf9c1-a7bf-41c7-8454-93e6a99f0c11")
+		        .header("X-Riot-Token", key)
 		        .header("Accept-Language", "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7")
 		        .header("Accept-Charset", "application/x-www-form-urlencoded; charset=UTF-8")
 		        .retrieve()
@@ -110,10 +112,12 @@ public class LoLAPIService {
 		        .get()
 		        .uri(uriBuilder ->
 		                uriBuilder
-		                        .path(puuid)
+		                        .path(puuid+"/ids")
+		                        .queryParam("start", 0)
+		                        .queryParam("count", 20)
 		                        .build())
 		        .header("Origin", "https://developer.riotgames.com")
-		        .header("X-Riot-Token", "RGAPI-c6eaf9c1-a7bf-41c7-8454-93e6a99f0c11")
+		        .header("X-Riot-Token", key)
 		        .header("Accept-Language", "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7")
 		        .header("Accept-Charset", "application/x-www-form-urlencoded; charset=UTF-8")
 		        .retrieve()
@@ -121,5 +125,33 @@ public class LoLAPIService {
 		        .block();
 		return response;
 	}
+	
+	
+	
+	public Map<String, Object> findMatchesByMatchId (String matchId) {
+		WebClient webClient =
+                WebClient
+                        .builder()
+                        .baseUrl("https://asia.api.riotgames.com/lol/match/v5/matches/")
+                        .build();
+
+        // api 요청
+		Map<String,Object> response =
+				 webClient
+		        .get()
+		        .uri(uriBuilder ->
+		                uriBuilder
+		                        .path(matchId)
+		                        .build())
+		        .header("Origin", "https://developer.riotgames.com")
+		        .header("X-Riot-Token", key)
+		        .header("Accept-Language", "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7")
+		        .header("Accept-Charset", "application/x-www-form-urlencoded; charset=UTF-8")
+		        .retrieve()
+		        .bodyToMono(Map.class)
+		        .block();
+		return response;
+	}
+	
 
 }
