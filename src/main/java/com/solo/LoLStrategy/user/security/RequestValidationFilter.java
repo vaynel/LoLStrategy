@@ -32,7 +32,7 @@ public class RequestValidationFilter implements Filter{
 		 */
 		
 		
-		// 요청을 필ㅊ터 체인의 다음 필터에 전달
+		// 요청을 필터 체인의 다음 필터에 전달
 		filterchain.doFilter(request, response);
 	}
 

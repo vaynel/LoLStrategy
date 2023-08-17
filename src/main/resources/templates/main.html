@@ -1,54 +1,68 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <title>Main Page</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-        crossorigin="anonymous" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+<title>Main Page</title>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+	crossorigin="anonymous" />
 </head>
-    <link rel="stylesheet" th:href="@{/css/main.css}">
+<link rel="stylesheet" th:href="@{/css/main.css}">
 <body>
-<div class="container-fluid text-center">
- 	<p>롤 전략 사이트</p>
-    <div class="border border-secondary p-3 rounded text-left">       
-            <ul>
-            	<li>소환사 : <span th:text = "${MyRiotAccount.name}"><</span></li>
-            	<li>LV : <span th:text = "${MyRiotAccount.summonerLevel}"></span></li>
-            	<li> 
-            		<span th:text = "${MyLeague[0].tier}"></span>
-            		<span th:text = "${MyLeague[0].rank}"></span>
-            	</li>
-            	<li><span th:text = "${MyLeague[0].wins}"></span>
-		    		<span th:text = "승"></span>
-					<span th:text = "${MyLeague[0].losses}"></span>    	
-					<span th:text = "패"></span>
-				</li>
-            </ul>    
-    </div>
-    <br>
+	<div class="container-fluid text-center">
+		<p>롤 전략 사이트</p>
+		<div class="border border-secondary p-3 rounded text-left">
+			<ul>
+				<li>소환사 : <span th:text="${MyRiotAccount.name}"><</span></li>
+				<li>LV : <span th:text="${MyRiotAccount.summonerLevel}"></span></li>
+				<li><span th:text="${MyLeague[0].tier}"></span> <span
+					th:text="${MyLeague[0].rank}"></span></li>
+				<li>
+				<span th:text="${MyLeague[0].wins}"></span> <span th:text="승"></span>
+				 <span th:text="${MyLeague[0].losses}"></span> <span th:text="패"></span></li>
+			</ul>
+		</div>
+		<br>
 
-    <div class="border border-secondary p-3 rounded text-left">
-    
-    
-    	<p>자주 사용하는 챔피언</p>
-    	
-    	<p>최근 전적</p>
-    	<li>
-    		<span th:text = "${MyLeague[1].wins}"></span>
-    		<span th:text = "승"></span>
-			<span th:text = "${MyLeague[1].losses}"></span>    	
-			<span th:text = "패"></span>
-    	</li>
-    	<p> 최근 매치 </p>
-    	<!-- <tr th:each="MatchList : ${MatchList}">
+		<div class="border border-secondary p-3 rounded text-left">
+
+
+			<p>자주 사용하는 챔피언</p>
+				<span th:text="${recentlyChampions}"></span>
+				<br>
+			<p>최근 전적</p>
+			<!-- <li><span th:text="${MyLeague[1].wins}"></span> <span
+				th:text="승"></span> <span th:text="${MyLeague[1].losses}"></span> <span
+				th:text="패"></span></li> -->
+				<br>
+			<p>최근 매치</p>
+			<!-- <tr th:each="MatchList : ${MatchList}">
 			<td th:text="${MatchList}"></td><br>
 		</tr> -->
-    </div>
-    
-    
-    
-</div>
+			<table>
+				<tr>
+					<td>승리</td>
+					<td>챔피언   </td>
+					<td>킬</td>
+					<td>데스</td>
+					<td>어시스트</td>
+				</tr>
+				<tr th:each="MyParticipant : ${MyParticipants} ">
+
+					<td th:text="${MyParticipant.win}"></td>
+					<td th:text="${MyParticipant.championName}"></td>
+					<td th:text="${MyParticipant.kills}"></td>
+					<td th:text="${MyParticipant.deaths}"></td>
+					<td th:text="${MyParticipant.assists}"></td>
+				</tr>
+			</table>
+		</div>
+
+
+
+	</div>
 </body>
 </html>

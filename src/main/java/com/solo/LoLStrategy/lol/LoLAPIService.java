@@ -1,6 +1,5 @@
 package com.solo.LoLStrategy.lol;
 
-
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
@@ -15,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LoLAPIService {
 	
-	private static String key = "RGAPI-4e9fc425-4ece-4671-a2e5-705eee760786";
+	private static String key = "RGAPI-a20d1577-125f-4dd9-a765-5dbf4990a770";
 
 	public void get() {
         // webClient 기본 설정
@@ -59,8 +58,8 @@ public class LoLAPIService {
 		        .uri(uriBuilder ->
 		                uriBuilder
 		                        .path(gameId)
-		                        .queryParam("api_key", key)
 		                        .build())
+		        .header("X-Riot-Token", key)
 		        .header("Origin", "https://developer.riotgames.com")
 		        .header("Accept-Language", "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7")
 		        .header("Accept-Charset", "application/x-www-form-urlencoded; charset=UTF-8")
@@ -152,6 +151,9 @@ public class LoLAPIService {
 		        .block();
 		return response;
 	}
+	
+	
+	
 	
 
 }

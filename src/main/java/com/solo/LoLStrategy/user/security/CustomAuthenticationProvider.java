@@ -32,11 +32,11 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+		
 		String username = authentication.getName();
 		String password = authentication.getCredentials().toString();
 		
 		log.info(username);
-		
 		
 		CustomUserDetails user = userDetailsService.loadUserByUsername(username);
 		

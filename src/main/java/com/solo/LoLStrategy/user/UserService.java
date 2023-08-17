@@ -1,8 +1,12 @@
 package com.solo.LoLStrategy.user;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -38,25 +42,66 @@ public class UserService {
 		user.setJoinDate(new Date());
 		userRepository.save(user);
 	}
+	
+	public String returnRecentlyChampions(ParticipantDTO[] myParticipants) {
+		
+		String result ="";
+		
+		
+		String[] champions = new String[20];
+		for (int i = 0; i < champions.length; i++) {
+			champions[i]=myParticipants[i].getChampionName();
+		}
+		Set<String> championsSet = new HashSet<String>(Arrays.asList(champions));
+		Integer[] championCount = new Integer[championsSet.size()];
+		for (int i = 0; i < championCount.length; i++) {
+			championCount[i]=0;
+		}
+		
+		String[] championsSets = championsSet.toArray(new String[championsSet.size()]);
+		
+		for (String champion : champions) {
+			for (int i = 0; i < championsSets.length; i++) {
+				if(championsSets[i].equals(champion)) {
+					championCount[i]++;
 
-	public ParticipantDTO getMatchListDetails(String[] matchList, SummonerDTO myRiotAccount) {
-
-		// participantDTO로 바꾸기
-		Map<String, Object> info = (Map<String, Object>) lolAPIService.findMatchesByMatchId(matchList[0]).get("info");
-		List<Object> test = (List<Object>) info.get("participants");
-
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		List<ParticipantDTO> participants = mapper.convertValue(test, new TypeReference<List<ParticipantDTO>>(){});
-		ParticipantDTO myParticipant = new ParticipantDTO();
-		for (ParticipantDTO participant : participants) {
-			if(participant.getSummonerName().equals(myRiotAccount.getName())) {
-				myParticipant=participant;
-				break;
+				}	
 			}
 		}
-		log.info(myParticipant.toString());
-		return myParticipant;
+
+		for (int i = 0; i < championsSets.length; i++) {
+			result+=(championsSets[i]+" - " + championCount[i]+ " / ");
+			
+		}
+		return result;
+	}
+	
+	
+
+	public ParticipantDTO[] getMatchListDetails(String[] matchList, SummonerDTO myRiotAccount) {
+
+		ParticipantDTO[] myParticipants = new ParticipantDTO[20];
+		ParticipantDTO myParticipant = new ParticipantDTO();
+
+		// participantDTO로 바꾸기
+		for (int i = 0; i < matchList.length; i++) {
+			Map<String, Object> info = (Map<String, Object>) lolAPIService.findMatchesByMatchId(matchList[i])
+					.get("info");
+			List<Object> test = (List<Object>) info.get("participants");
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			List<ParticipantDTO> participants = mapper.convertValue(test, new TypeReference<List<ParticipantDTO>>() {
+			});
+			for (ParticipantDTO participant : participants) {
+				if (participant.getSummonerName().equals(myRiotAccount.getName())) {
+					myParticipant = participant;
+					break;
+				}
+			}
+			myParticipants[i] = myParticipant;
+		}
+
+		return myParticipants;
 	}
 
 }

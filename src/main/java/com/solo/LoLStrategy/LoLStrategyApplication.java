@@ -26,7 +26,7 @@ public class LoLStrategyApplication {
 			User user = new User();
 			user.setId(1);
 			user.setGameId("cammel");
-			user.setUserName("johh");
+			user.setUserName("cammel");
 			user.setPassword(new BCryptPasswordEncoder().encode("1234"));
 			user.setAlgorithm(EncryptionAlgorithm.BCRYPT);
 			userRepository.save(user);
