@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+	crossorigin="anonymous" />
+</head>
+<link rel="stylesheet" th:href="@{/css/main.css}">
+<title>챔피언 공략</title>
+</head>
+<body>
+	
+	<div class="container" style="max-width: 1000px">
+	    <div class="py-5 text-center">
+			<h2 th:text="${champion}"></h2>
+	        <h2>챔피언 공략</h2>
+	    </div>
+
+	    <div class="row">
+	        <div class="col">
+	            <button class="btn btn-primary float-end"
+	                    onclick="location.href='addForm.html'"
+	                    th:onclick="|location.href='@{/strategy/add}'|"
+	                    type="button" >작성</button>
+	        </div>
+	    </div>
+
+    <hr class="my-4">
+    <div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th >ID</th>
+                <th >제목</th>
+                <th >작성자</th>
+                <th >조회수</th>
+                <th >등록일</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="board : ${boards}">
+                <td><a href="item.html" th:href="@{/boards/{uid}(uid=${board.uid})}" th:text="${board.uid}">글 ID</a></td>
+                <td><a href="item.html" th:href="@{/boards/{uid}(uid=${board.uid})}" th:text="${board.subject}">제목</a></td>
+                <td th:text="${board.name}">작성자</td>
+                <td th:text="${board.viewcnt}">조회수</td>
+                <td th:text="${board.regdate}">등록일</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div> 
+	
+</body>
+</html>
