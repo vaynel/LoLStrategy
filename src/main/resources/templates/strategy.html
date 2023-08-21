@@ -15,7 +15,7 @@
 <body>
 	
 	<div class="container" style="max-width: 1000px">
-	    <div class="py-5 text-center">
+	    <div class="py-5 text-center row">
 			<h2 th:text="${champion}"></h2>
 	        <h2>챔피언 공략</h2>
 	    </div>
@@ -37,18 +37,19 @@
                 <th >ID</th>
                 <th >제목</th>
                 <th >작성자</th>
-                <th >조회수</th>
+               <!--  <th >조회수</th> -->
                 <th >등록일</th>
 
             </tr>
             </thead>
             <tbody>
-            <tr th:each="board : ${boards}">
-                <td><a href="item.html" th:href="@{/boards/{uid}(uid=${board.uid})}" th:text="${board.uid}">글 ID</a></td>
-                <td><a href="item.html" th:href="@{/boards/{uid}(uid=${board.uid})}" th:text="${board.subject}">제목</a></td>
-                <td th:text="${board.name}">작성자</td>
-                <td th:text="${board.viewcnt}">조회수</td>
-                <td th:text="${board.regdate}">등록일</td>
+            <tr th:each="board : ${BoardList}">
+            	<td hidden="true"><a th:text = "${board.champion}"></a></td>
+                <td><a  th:text="${board.id}">글 ID</a></td>
+                <td><a  href="strategyBoard.html"
+                 th:href="@{/strategy/{champ}/detail(id=${board.id},champ=${board.champion})}"  th:text="${board.subject}">제목</a></td>
+                <td th:text="${board.writer}">작성자</td>
+                <td th:text="${board.date}">등록일</td>
             </tr>
             </tbody>
         </table>

@@ -1,23 +1,25 @@
 package com.solo.LoLStrategy.strategy.DTO;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
-import lombok.Data;
+import com.solo.LoLStrategy.common.board.Board;
 
-@Data
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString(callSuper = true)
 @Entity
 @Table(name = "strategyBoard")
-public class StrategyBoard {
+@EqualsAndHashCode(callSuper = true)
+public class StrategyBoard extends Board {
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer boardId;
-	private String subject;
-	private String contents;
-	private String writer;
+	
+	private Integer id;
+	private String champion;
 
 }

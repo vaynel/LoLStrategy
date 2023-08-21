@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+	crossorigin="anonymous" />
+</head>
+<link rel="stylesheet" th:href="@{/css/main.css}">
+<title>챔피언 공략글</title>
+</head>
+<body>
+	<div class="container">
+
+    <!-- 추가 -->
+    <h2 th:if="${param.status}" th:text="'저장 완료'"></h2>
+
+    <div>
+        <label for="boardId" >ID</label>
+        <input type="text" id="Id" name="Id" class="form-control" value="1" th:value="${board.id}" readonly>
+    </div>
+    <div>
+        <label for="boardSubject" >제목</label>
+        <input type="text" id="subject" name="subject" class="form-control" value="상품A" th:value="${board.subject}" readonly>
+    </div>
+    <div>
+        <label for="name" >작성자</label>
+        <input type="text" id="write" name="write" class="form-control" value="작성자" th:value="${board.write}" readonly>
+    </div>
+
+    <div>
+        <label for="regdate" >등록일</label>
+        <input type="text" id="date" name="date" class="form-control" value="10" th:value="${board.date}" readonly>
+    </div>
+
+    <div>
+        <label for="contents" >글 내용</label>
+        <input type="text" id="contents" name="contents" class="form-control" value="10" th:value="${board.contents}" readonly>
+    </div>
+
+    <hr class="my-4">
+
+    <div class="row">
+        <div class="col">
+            <button class="w-100 btn btn-primary btn-lg"> 수정</button>
+        </div>
+        <div class="col">
+            <button class="w-100 btn btn-secondary btn-lg"
+                    type="button" >목록으로</button>
+        </div>
+
+        <div class="col">
+            <button class="w-100 btn btn-secondary btn-lg"
+                    onclick="location.href='strategy/${champion}.html'"
+                    type="button">삭제</button>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>

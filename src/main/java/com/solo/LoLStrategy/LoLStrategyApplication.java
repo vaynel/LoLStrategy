@@ -1,11 +1,15 @@
 package com.solo.LoLStrategy;
 
+import java.util.Date;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.solo.LoLStrategy.common.board.BoardRepository;
+import com.solo.LoLStrategy.strategy.DTO.StrategyBoard;
 import com.solo.LoLStrategy.user.CustomUserDetails;
 import com.solo.LoLStrategy.user.User;
 import com.solo.LoLStrategy.user.UserRepository;
@@ -21,7 +25,7 @@ public class LoLStrategyApplication {
 	// johh 아이디 생성
 
 	@Bean
-	public CommandLineRunner demo(UserRepository userRepository) {
+	public CommandLineRunner demo(UserRepository userRepository,BoardRepository boardResRepository) {
 		return (args) -> {
 			User user = new User();
 			user.setId(1);
@@ -30,6 +34,20 @@ public class LoLStrategyApplication {
 			user.setPassword(new BCryptPasswordEncoder().encode("1234"));
 			user.setAlgorithm(EncryptionAlgorithm.BCRYPT);
 			userRepository.save(user);
+			
+			for (int i = 0; i < 2; i++) {
+				StrategyBoard board = new StrategyBoard();
+				board.setChampion("vayne");
+				board.setContents("테스트"+i);
+				board.setDate(new Date());
+				board.setSubject("테스트");
+				board.setWriter("cammel");
+				boardResRepository.save(board);				
+			}
+			
+			
+			
+			
 		};
 	}
 
