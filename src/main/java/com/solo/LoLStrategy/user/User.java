@@ -13,13 +13,13 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.solo.LoLStrategy.league.Entity.League;
 import com.solo.LoLStrategy.user.security.Authority;
 import com.solo.LoLStrategy.user.security.EncryptionAlgorithm;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.Value;
 
 @Entity
 @Getter
@@ -41,6 +41,9 @@ public class User {
 	
 	@OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
 	private List<Authority> authorities;
+	
+	@OneToMany(mappedBy = "user")
+	private List<League> leagues;
 	
 	private String email;
 	private Date joinDate;

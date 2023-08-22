@@ -2,6 +2,7 @@ package com.solo.LoLStrategy.LoLAPITest;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.solo.LoLStrategy.championMaster.ChampionMasterService;
 import com.solo.LoLStrategy.lol.LoLAPIService;
+import com.solo.LoLStrategy.lol.VO.LeagueItemDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,6 +22,9 @@ public class LoLAPITest {
 	
 	@Autowired
     private LoLAPIService LoLAPIService;
+	
+	@Autowired
+	private ChampionMasterService championMasterService;
 	
 	@Test
 	public void getJsonData() {
@@ -47,5 +53,12 @@ public class LoLAPITest {
 		}
 		
 	}
+	
+	@Test
+	public void TestGetCHALLENGERS() {
+		//List<LeagueItemDTO> challengers = championMasterService.getCHALLENGERS();
+		//LoLAPIService.getChampionMasteryTop3(challengers.get(0).getSummonerId());
+	}
+	
 
 }
