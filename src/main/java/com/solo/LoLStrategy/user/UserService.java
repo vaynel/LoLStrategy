@@ -14,7 +14,10 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.solo.LoLStrategy.league.LeagueRepository;
+import com.solo.LoLStrategy.league.Entity.League;
 import com.solo.LoLStrategy.lol.LoLAPIService;
+import com.solo.LoLStrategy.lol.VO.LeagueEntryDTO;
 import com.solo.LoLStrategy.lol.VO.ParticipantDTO;
 import com.solo.LoLStrategy.lol.VO.SummonerDTO;
 import com.solo.LoLStrategy.user.security.EncryptionAlgorithm;
@@ -27,6 +30,9 @@ public class UserService {
 
 	@Autowired
 	public UserRepository userRepository;
+	
+	@Autowired
+	public LeagueRepository leagueRepository;
 
 	@Autowired
 	public LoLAPIService lolAPIService;
@@ -101,6 +107,27 @@ public class UserService {
 		}
 
 		return myParticipants;
+	}
+	
+	
+	public void updateUserData(User user ) {
+		log.info("소환사의 정보를 업데이트합니다");
+		SummonerDTO summoner = lolAPIService.getSummonerV4ById(user.getGameId());
+		LeagueEntryDTO[] LeagueEntries = lolAPIService.getLeagueV4BySummonerId(summoner.getAccountId());
+		LeagueEntryDTO leagueEntry = new LeagueEntryDTO();
+		for (LeagueEntryDTO leagueE : LeagueEntries) {
+			if(leagueE.getQueueType().equals("RANKED_SOLO_5x5")) leagueEntry=leagueE;
+		}
+		League league= League.builder()
+				.user(user)
+				.leaguePoints(leagueEntry.getLeaguePoints())
+				.rank(leagueEntry.getRank())
+				.tier(leagueEntry.getTier())
+				.season("13-2")
+				.build();
+		
+		leagueRepository.save(league);
+		
 	}
 
 }

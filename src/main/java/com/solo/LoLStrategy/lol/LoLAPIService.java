@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LoLAPIService {
 
-	private static String key = "RGAPI-74928e00-1e56-4d8c-bff0-e4eff0eefae8";
+	private static String key = "RGAPI-0ea44f98-ee8f-4f71-96db-3e6c1ed08ecb";
 
 	public void get() {
 		// webClient 기본 설정
@@ -36,6 +36,8 @@ public class LoLAPIService {
 		log.info(response.toString());
 	}
 
+	
+	// 소환사 DTO 얻기
 	public SummonerDTO getSummonerV4ById(String gameId) {
 		WebClient webClient = WebClient.builder()
 				.baseUrl("https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/").build();
@@ -64,6 +66,7 @@ public class LoLAPIService {
 		return response;
 	}
 
+	// 매치의 ID를 받습니다. 
 	public String[] returnMatchList(String puuid) {
 		WebClient webClient = WebClient.builder()
 				.baseUrl("https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/").build();
@@ -78,7 +81,9 @@ public class LoLAPIService {
 				.bodyToMono(String[].class).block();
 		return response;
 	}
-
+	
+	
+	// 매치에 세부정보를 받습니다. 
 	public Map<String, Object> findMatchesByMatchId(String matchId) {
 		WebClient webClient = WebClient.builder().baseUrl("https://asia.api.riotgames.com/lol/match/v5/matches/")
 				.build();
@@ -92,6 +97,7 @@ public class LoLAPIService {
 		return response;
 	}
 
+	
 	public Map<String, Object> getChallengers() {
 		WebClient webClient = WebClient.builder()
 				.baseUrl("https://kr.api.riotgames.com/lol/league/v4/challengerleagues/by-queue/RANKED_SOLO_5x5")

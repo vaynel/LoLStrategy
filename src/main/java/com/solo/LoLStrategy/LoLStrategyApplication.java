@@ -13,6 +13,7 @@ import com.solo.LoLStrategy.strategy.DTO.StrategyBoard;
 import com.solo.LoLStrategy.user.CustomUserDetails;
 import com.solo.LoLStrategy.user.User;
 import com.solo.LoLStrategy.user.UserRepository;
+import com.solo.LoLStrategy.user.UserService;
 import com.solo.LoLStrategy.user.security.EncryptionAlgorithm;
 
 @SpringBootApplication
@@ -25,8 +26,10 @@ public class LoLStrategyApplication {
 	// johh 아이디 생성
 
 	@Bean
-	public CommandLineRunner demo(UserRepository userRepository,BoardRepository boardResRepository) {
+	public CommandLineRunner demo(UserRepository userRepository,BoardRepository boardResRepository,UserService userService) {
 		return (args) -> {
+			
+			// 유저 한명 생성하기 
 			User user = new User();
 			user.setId(1);
 			user.setGameId("cammel");
@@ -35,6 +38,10 @@ public class LoLStrategyApplication {
 			user.setAlgorithm(EncryptionAlgorithm.BCRYPT);
 			userRepository.save(user);
 			
+			userService.updateUserData(user);
+			
+			
+			// 게시판 2개만듬 
 			for (int i = 0; i < 2; i++) {
 				StrategyBoard board = new StrategyBoard();
 				board.setChampion("vayne");
