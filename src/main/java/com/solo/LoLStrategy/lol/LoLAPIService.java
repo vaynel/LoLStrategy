@@ -1,11 +1,16 @@
 package com.solo.LoLStrategy.lol;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.solo.LoLStrategy.championMaster.DTO.ChampionMasteryDto;
 import com.solo.LoLStrategy.lol.VO.LeagueEntryDTO;
+import com.solo.LoLStrategy.lol.VO.LeagueItemDTO;
 import com.solo.LoLStrategy.lol.VO.SummonerDTO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +49,8 @@ public class LoLAPIService {
         log.info(response.toString());
     }
 
+	
+	// 소환사 정보 얻기
 	public SummonerDTO getSummonerV4ById(String gameId) {
 		WebClient webClient =
                 WebClient
@@ -72,6 +79,7 @@ public class LoLAPIService {
 	}
 	
 	
+	// 리그 엔트리 얻기
 	public LeagueEntryDTO[] getLeagueV4BySummonerId(String SummonerId) {
 		WebClient webClient =
                 WebClient
@@ -97,7 +105,7 @@ public class LoLAPIService {
 		return response;
 	}
 	
-	
+	// 최근 매칭 얻기
 	public String[] returnMatchList(String puuid) {
 		WebClient webClient =
                 WebClient
@@ -151,6 +159,66 @@ public class LoLAPIService {
 		        .block();
 		return response;
 	}
+	
+	
+	
+	// 챌린저 티어 유저 정보
+	public List<LeagueItemDTO> CHALLENGERTierUsers() {
+		WebClient webClient =
+				WebClient
+				.builder()
+				.baseUrl("https://kr.api.riotgames.com/lol/league/v4/challengerleagues/by-queue/RANKED_SOLO_5x5")
+				.build();
+		
+		Map<String,Object> response =
+                webClient
+		        .get()
+		        .uri(uriBuilder ->
+		                uriBuilder
+		                        .build())
+		        .header("X-Riot-Token", key)
+		        .header("Origin", "https://developer.riotgames.com")
+		        .header("Accept-Language", "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7")
+		        .header("Accept-Charset", "application/x-www-form-urlencoded; charset=UTF-8")
+		        .retrieve()
+		        .bodyToMono(Map.class)
+		        .block();
+		// 받은데이터를 LeagueItemDTO로 변환 
+		ObjectMapper mapper = new ObjectMapper();
+		List<LeagueItemDTO> leagueItems = mapper.convertValue(response.get("entries"),new TypeReference<List<LeagueItemDTO>>() {}); 
+		return leagueItems;
+		
+	}
+	
+	
+	public List<ChampionMasteryDto> returnChampionMasteryTop3(String summonerld) {
+		
+		WebClient webClient =
+				WebClient
+				.builder()
+				.baseUrl("https://kr.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/")
+				.build();
+		
+		List<ChampionMasteryDto> response =
+                webClient
+		        .get()
+		        .uri(uriBuilder ->
+		                uriBuilder
+		                	.path(summonerld+"/top")
+		                	.queryParam("count", 3)
+		                     .build())
+		        .header("X-Riot-Token", key)
+		        .header("Origin", "https://developer.riotgames.com")
+		        .header("Accept-Language", "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7")
+		        .header("Accept-Charset", "application/x-www-form-urlencoded; charset=UTF-8")
+		        .retrieve()
+		        .bodyToMono(List.class)
+		        .block();
+		
+		return response;
+		
+	}
+	
 	
 	
 	

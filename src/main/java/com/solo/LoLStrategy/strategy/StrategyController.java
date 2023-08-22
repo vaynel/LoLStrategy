@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.solo.LoLStrategy.common.board.BoardService;
-import com.solo.LoLStrategy.strategy.DTO.StrategyBoard;
+import com.solo.LoLStrategy.strategy.DTO.StrategyBoardDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,7 +28,7 @@ public class StrategyController {
 	
 	@RequestMapping(value = "/strategy/{champion}")
 	public String champion(@PathVariable("champion") String champion, Model model) {
-		List<StrategyBoard> BoardList = boardService.findBoardByChampion(champion);
+		List<StrategyBoardDTO> BoardList = boardService.findBoardByChampion(champion);
 		log.info(champion+" 챔피언 공략");
 		log.info(BoardList.toString());
 		model.addAttribute("champion", champion);
@@ -40,7 +40,7 @@ public class StrategyController {
 	
 	@RequestMapping(value = "/strategy/{champion}/detail/{id}")
 	public String boardDetail(@PathVariable("champion")String champion,@PathVariable("id")String id,Model model) {
-		StrategyBoard board = boardService.findBoardById(id);
+		StrategyBoardDTO board = boardService.findBoardById(id);
 		
 		
 		return "strategyBoard.html";
@@ -55,7 +55,7 @@ public class StrategyController {
 	
 	@RequestMapping(value = "/strategy/add",method = RequestMethod.POST)
 	@ResponseBody
-	public String addPostStrategy(StrategyBoard board,Authentication a)  {
+	public String addPostStrategy(StrategyBoardDTO board,Authentication a)  {
 		log.info("게시글 등록하기");
 		board.setWriter(a.getName());
 		board.setChampion("vayne");
@@ -65,6 +65,8 @@ public class StrategyController {
 		
 		return "strategy.html"; 
 	}
+	
+
 	
 	
 	

@@ -1,4 +1,4 @@
-package com.solo.LoLStrategy.strategy.champion;
+package com.solo.LoLStrategy.common.champion;
 
 public enum Champions{
 	
