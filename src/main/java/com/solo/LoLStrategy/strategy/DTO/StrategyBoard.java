@@ -17,8 +17,7 @@ import lombok.ToString;
 @Table(name = "strategyBoard")
 @EqualsAndHashCode(callSuper = true)
 public class StrategyBoard extends Board {
-	
-	
+
 	private Integer id;
 	private String champion;
 

@@ -14,8 +14,8 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.solo.LoLStrategy.league.LeagueRepository;
-import com.solo.LoLStrategy.league.Entity.League;
+import com.solo.LoLStrategy.league.SummonerRepository;
+import com.solo.LoLStrategy.league.Entity.Summoner;
 import com.solo.LoLStrategy.lol.LoLAPIService;
 import com.solo.LoLStrategy.lol.VO.LeagueEntryDTO;
 import com.solo.LoLStrategy.lol.VO.ParticipantDTO;
@@ -32,7 +32,7 @@ public class UserService {
 	public UserRepository userRepository;
 	
 	@Autowired
-	public LeagueRepository leagueRepository;
+	public SummonerRepository summonerRepository;
 
 	@Autowired
 	public LoLAPIService lolAPIService;
@@ -46,6 +46,9 @@ public class UserService {
 		user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
 		user.setJoinDate(new Date());
 		userRepository.save(user);
+		Summoner summoner = lolAPIService.getSummonerV4ById(user.getGameId());
+		summonerRepository.save(summoner);
+		log.info(summoner.getUser().getGameId()+"등록완료");
 	}
 	
 	public String returnRecentlyChampions(ParticipantDTO[] myParticipants) {
@@ -83,7 +86,7 @@ public class UserService {
 	
 	
 
-	public ParticipantDTO[] getMatchListDetails(String[] matchList, SummonerDTO myRiotAccount) {
+	public ParticipantDTO[] getMatchListDetails(String[] matchList, Summoner myRiotAccount) {
 
 		ParticipantDTO[] myParticipants = new ParticipantDTO[20];
 		ParticipantDTO myParticipant = new ParticipantDTO();
@@ -112,21 +115,21 @@ public class UserService {
 	
 	public void updateUserData(User user ) {
 		log.info("소환사의 정보를 업데이트합니다");
-		SummonerDTO summoner = lolAPIService.getSummonerV4ById(user.getGameId());
+		Summoner summoner = lolAPIService.getSummonerV4ById(user.getGameId());
 		LeagueEntryDTO[] LeagueEntries = lolAPIService.getLeagueV4BySummonerId(summoner.getAccountId());
 		LeagueEntryDTO leagueEntry = new LeagueEntryDTO();
 		for (LeagueEntryDTO leagueE : LeagueEntries) {
 			if(leagueE.getQueueType().equals("RANKED_SOLO_5x5")) leagueEntry=leagueE;
 		}
-		League league= League.builder()
-				.user(user)
-				.leaguePoints(leagueEntry.getLeaguePoints())
-				.rank(leagueEntry.getRank())
-				.tier(leagueEntry.getTier())
-				.season("13-2")
-				.build();
-		
-		leagueRepository.save(league);
+//		League league= League.builder()
+//				.user(user)
+//				.leaguePoints(leagueEntry.getLeaguePoints())
+//				.rank(leagueEntry.getRank())
+//				.tier(leagueEntry.getTier())
+//				.season("13-2")
+//				.build();
+//		
+//		leagueRepository.save(league);
 		
 	}
 

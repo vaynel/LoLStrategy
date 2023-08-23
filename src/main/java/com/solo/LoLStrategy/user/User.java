@@ -8,12 +8,12 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.OneToOne;
 
-import com.solo.LoLStrategy.league.Entity.League;
+import com.solo.LoLStrategy.league.Entity.Summoner;
 import com.solo.LoLStrategy.user.security.Authority;
 import com.solo.LoLStrategy.user.security.EncryptionAlgorithm;
 
@@ -25,11 +25,10 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@Table(name = "user")
 public class User {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue
 	private Integer id;
 	
 	private String userName;
@@ -41,12 +40,12 @@ public class User {
 	
 	@OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
 	private List<Authority> authorities;
-	
-	@OneToMany(mappedBy = "user")
-	private List<League> leagues;
-	
+
 	private String email;
 	private Date joinDate;
+	
+	@OneToOne(mappedBy = "user")
+	private Summoner summoner;
 	
 	
 }

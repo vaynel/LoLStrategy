@@ -26,36 +26,50 @@ public class LoLStrategyApplication {
 	// johh 아이디 생성
 
 	@Bean
-	public CommandLineRunner demo(UserRepository userRepository,BoardRepository boardResRepository,UserService userService) {
+	public CommandLineRunner demo(UserRepository userRepository, BoardRepository boardResRepository,
+			UserService userService) {
 		return (args) -> {
-			
-			// 유저 한명 생성하기 
-			User user = new User();
-			user.setId(1);
-			user.setGameId("cammel");
-			user.setUserName("cammel");
-			user.setPassword(new BCryptPasswordEncoder().encode("1234"));
-			user.setAlgorithm(EncryptionAlgorithm.BCRYPT);
+
+			// 유저 한명 생성하기
+			User user = createUser();
 			userRepository.save(user);
+//			userService.register(user);
+
+			// userService.updateUserData(user);
 			
-			userService.updateUserData(user);
-			
-			
-			// 게시판 2개만듬 
-			for (int i = 0; i < 2; i++) {
-				StrategyBoard board = new StrategyBoard();
-				board.setChampion("vayne");
-				board.setContents("테스트"+i);
-				board.setDate(new Date());
-				board.setSubject("테스트");
-				board.setWriter("cammel");
-				boardResRepository.save(board);				
-			}
-			
-			
-			
-			
+			// 게시판 2개 만들기 
+//			StrategyBoard board1 = createBoard(1);
+//			boardResRepository.save(board1);
+//			StrategyBoard board2 = createBoard(2);
+//			boardResRepository.save(board2);
+
 		};
+	}
+	
+	
+	
+	
+	
+	// cammel 유저 만들기
+	public User createUser() {
+		User user = new User();
+		user.setId(1);
+		user.setGameId("cammel");
+		user.setUserName("cammel");
+		user.setPassword(new BCryptPasswordEncoder().encode("1234"));
+		user.setAlgorithm(EncryptionAlgorithm.BCRYPT);
+		return user;
+	}
+
+	// 게시판 하나 생성
+	public StrategyBoard createBoard(Integer i) {
+		StrategyBoard board = new StrategyBoard();
+		board.setChampion("vayne");
+		board.setContents("테스트" + i);
+		board.setDate(new Date());
+		board.setSubject("테스트");
+		board.setWriter("cammel");
+		return board;
 	}
 
 }

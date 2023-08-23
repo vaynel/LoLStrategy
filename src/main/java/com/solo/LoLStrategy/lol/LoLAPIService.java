@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.solo.LoLStrategy.championMaster.ChampionMasteryDto;
+import com.solo.LoLStrategy.league.Entity.Summoner;
 import com.solo.LoLStrategy.lol.VO.LeagueEntryDTO;
 import com.solo.LoLStrategy.lol.VO.LeagueItemDTO;
 import com.solo.LoLStrategy.lol.VO.SummonerDTO;
@@ -17,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LoLAPIService {
 
-	private static String key = "RGAPI-0ea44f98-ee8f-4f71-96db-3e6c1ed08ecb";
+	private static String key = "RGAPI-5410aa4f-13b0-41f9-b631-fe9f3fc98dea";
 
 	public void get() {
 		// webClient 기본 설정
@@ -38,16 +39,16 @@ public class LoLAPIService {
 
 	
 	// 소환사 DTO 얻기
-	public SummonerDTO getSummonerV4ById(String gameId) {
+	public Summoner getSummonerV4ById(String gameId) {
 		WebClient webClient = WebClient.builder()
 				.baseUrl("https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/").build();
 
 		// api 요청
-		SummonerDTO response = webClient.get().uri(uriBuilder -> uriBuilder.path(gameId).build())
+		Summoner response = webClient.get().uri(uriBuilder -> uriBuilder.path(gameId).build())
 				.header("X-Riot-Token", key).header("Origin", "https://developer.riotgames.com")
 				.header("Accept-Language", "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7")
 				.header("Accept-Charset", "application/x-www-form-urlencoded; charset=UTF-8").retrieve()
-				.bodyToMono(SummonerDTO.class).block();
+				.bodyToMono(Summoner.class).block();
 
 		log.info(response.toString());
 		return response;

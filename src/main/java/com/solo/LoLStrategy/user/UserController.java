@@ -7,10 +7,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.solo.LoLStrategy.league.Entity.Summoner;
 import com.solo.LoLStrategy.lol.LoLAPIService;
 import com.solo.LoLStrategy.lol.VO.LeagueEntryDTO;
 import com.solo.LoLStrategy.lol.VO.ParticipantDTO;
-import com.solo.LoLStrategy.lol.VO.SummonerDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -44,7 +44,7 @@ public class UserController {
 	@RequestMapping(value = "/main", method = RequestMethod.GET)
 	public String main(Authentication a, Model model) {
 		
-		SummonerDTO MyRiotAccount = lolAPIService.getSummonerV4ById(a.getName()); // 소환사 정보 
+		Summoner MyRiotAccount = lolAPIService.getSummonerV4ById(a.getName()); // 소환사 정보 
 		LeagueEntryDTO[] MyLeague = lolAPIService.getLeagueV4BySummonerId(MyRiotAccount.getId()); // 소환사의 리그 정보
 		String[] MatchList = lolAPIService.returnMatchList(MyRiotAccount.getPuuid()); // 소환사가 최근에 한 게임 매치 List(20개)
 		ParticipantDTO[] myParticipants=userService.getMatchListDetails(MatchList,MyRiotAccount);
