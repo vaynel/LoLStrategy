@@ -12,6 +12,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.solo.LoLStrategy.championMaster.ChampionMasterService;
+import com.solo.LoLStrategy.league.LeagueRepository;
+import com.solo.LoLStrategy.league.SummonerRepository;
+import com.solo.LoLStrategy.league.Entity.League;
 import com.solo.LoLStrategy.lol.LoLAPIService;
 import com.solo.LoLStrategy.lol.VO.LeagueItemDTO;
 import com.solo.LoLStrategy.user.User;
@@ -29,7 +32,13 @@ public class LoLAPITest {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private LeagueRepository leagueRepository;
 
+	@Autowired
+	private SummonerRepository summonerRepository;
+	
 	@Autowired
 	private ChampionMasterService championMasterService;
 
@@ -74,6 +83,10 @@ public class LoLAPITest {
 	public void jpaOneToOneUser() {
 		User user = createUser();
 		userService.register(user);
+		userService.updateUserData(user);
+		List<League> league = leagueRepository.findAllLeagueBySummoner(summonerRepository.findSummonerByUser(user));
+		
+		log.info(league.get(0).getSummoner().getName()+"의 티어 : "+league.get(0).getTier()+league.get(0).getTierRank());
 	}
 	
 

@@ -32,8 +32,7 @@ public class LoLStrategyApplication {
 
 			// 유저 한명 생성하기
 			User user = createUser();
-			userRepository.save(user);
-//			userService.register(user);
+			userService.register(user);
 
 			// userService.updateUserData(user);
 			

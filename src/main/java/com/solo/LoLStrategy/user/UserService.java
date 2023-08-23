@@ -14,12 +14,14 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.solo.LoLStrategy.league.LeagueRepository;
 import com.solo.LoLStrategy.league.SummonerRepository;
+import com.solo.LoLStrategy.league.Entity.League;
 import com.solo.LoLStrategy.league.Entity.Summoner;
 import com.solo.LoLStrategy.lol.LoLAPIService;
 import com.solo.LoLStrategy.lol.VO.LeagueEntryDTO;
 import com.solo.LoLStrategy.lol.VO.ParticipantDTO;
-import com.solo.LoLStrategy.lol.VO.SummonerDTO;
+import com.solo.LoLStrategy.lol.VO.QueueType;
 import com.solo.LoLStrategy.user.security.EncryptionAlgorithm;
 
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +35,9 @@ public class UserService {
 	
 	@Autowired
 	public SummonerRepository summonerRepository;
+	
+	@Autowired
+	public LeagueRepository leagueRepository;
 
 	@Autowired
 	public LoLAPIService lolAPIService;
@@ -47,6 +52,7 @@ public class UserService {
 		user.setJoinDate(new Date());
 		userRepository.save(user);
 		Summoner summoner = lolAPIService.getSummonerV4ById(user.getGameId());
+		summoner.setUser(user);
 		summonerRepository.save(summoner);
 		log.info(summoner.getUser().getGameId()+"등록완료");
 	}
@@ -114,22 +120,25 @@ public class UserService {
 	
 	
 	public void updateUserData(User user ) {
-		log.info("소환사의 정보를 업데이트합니다");
-		Summoner summoner = lolAPIService.getSummonerV4ById(user.getGameId());
-		LeagueEntryDTO[] LeagueEntries = lolAPIService.getLeagueV4BySummonerId(summoner.getAccountId());
+		log.info(user.getGameId()+"소환사의 정보를 업데이트합니다");
+		Summoner summoner = summonerRepository.findSummonerByUser(user);
+		
+		LeagueEntryDTO[] LeagueEntries = lolAPIService.getLeagueV4BySummonerId(summoner.getId());
 		LeagueEntryDTO leagueEntry = new LeagueEntryDTO();
 		for (LeagueEntryDTO leagueE : LeagueEntries) {
-			if(leagueE.getQueueType().equals("RANKED_SOLO_5x5")) leagueEntry=leagueE;
+			if(leagueE.getQueueType().equals(QueueType.RANKED_SOLO_5x5)) leagueEntry=leagueE;
 		}
-//		League league= League.builder()
-//				.user(user)
-//				.leaguePoints(leagueEntry.getLeaguePoints())
-//				.rank(leagueEntry.getRank())
-//				.tier(leagueEntry.getTier())
-//				.season("13-2")
-//				.build();
-//		
-//		leagueRepository.save(league);
+		
+		log.info(leagueEntry.toString());
+		League league= League.builder()
+				.summoner(summoner)
+				.leaguePoints(leagueEntry.getLeaguePoints())
+				.tierRank(leagueEntry.getRank())
+				.tier(leagueEntry.getTier())
+				.season("13-2")
+				.build();
+		
+		leagueRepository.save(league);
 		
 	}
 
