@@ -3,6 +3,7 @@ package com.solo.LoLStrategy.user;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -42,7 +43,7 @@ public class User {
 	@OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
 	private List<Authority> authorities;
 	
-	@OneToMany(mappedBy = "user")
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL,orphanRemoval = true)
 	private List<League> leagues;
 	
 	private String email;

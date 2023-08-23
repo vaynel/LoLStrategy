@@ -1,6 +1,7 @@
 package com.solo.LoLStrategy.league.Entity;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,6 +18,7 @@ import lombok.Data;
 @Builder
 public class League {
 	
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String tier;
@@ -24,7 +26,7 @@ public class League {
 	private String season;
 	private Integer leaguePoints;
 	
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user")
-	@ManyToOne
 	private User user;
 }
