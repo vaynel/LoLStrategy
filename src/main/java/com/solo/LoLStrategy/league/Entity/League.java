@@ -1,6 +1,7 @@
 package com.solo.LoLStrategy.league.Entity;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -20,8 +21,9 @@ public class League {
 	private String tierRank;
 	private String season;
 	private Integer leaguePoints;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "SUMMONER_ID")
 	private Summoner summoner;
+
 }
