@@ -6,12 +6,12 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.solo.LoLStrategy.strategy.DTO.StrategyBoard;
+import com.solo.LoLStrategy.strategy.DTO.StrategyBoardDTO;
 
 @Repository
-public interface StrategyBoardRepository extends JpaRepository<StrategyBoard, Integer> {
+public interface StrategyBoardRepository extends JpaRepository<StrategyBoardDTO, Integer> {
 	
-	List<StrategyBoard> findAllStrategyBoardByChampion(String champion);
+	List<StrategyBoardDTO> findAllStrategyBoardByChampion(String champion);
 
-	StrategyBoard findStrategyBoardById(String id);
+	StrategyBoardDTO findStrategyBoardById(String id);
 }

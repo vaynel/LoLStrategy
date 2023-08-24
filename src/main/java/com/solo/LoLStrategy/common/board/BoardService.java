@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.solo.LoLStrategy.strategy.StrategyBoardRepository;
-import com.solo.LoLStrategy.strategy.DTO.StrategyBoard;
+import com.solo.LoLStrategy.strategy.DTO.StrategyBoardDTO;
 
 @Service
 public class BoardService {
@@ -18,17 +18,17 @@ public class BoardService {
 	@Autowired
 	StrategyBoardRepository strategyBoardRepository;
 
-	public void saveBoard(StrategyBoard board) {
+	public void saveBoard(StrategyBoardDTO board) {
 		boardRepository.save(board);
 			
 	}
 
-	public List<StrategyBoard> findBoardByChampion(String Champion) {
+	public List<StrategyBoardDTO> findBoardByChampion(String Champion) {
 		
 		return strategyBoardRepository.findAllStrategyBoardByChampion(Champion);
 	}
 
-	public StrategyBoard findBoardById(String id) {
+	public StrategyBoardDTO findBoardById(String id) {
 		
 		return strategyBoardRepository.findStrategyBoardById(id);
 	}

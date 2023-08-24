@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.solo.LoLStrategy.common.board.BoardRepository;
-import com.solo.LoLStrategy.strategy.DTO.StrategyBoard;
+import com.solo.LoLStrategy.strategy.DTO.StrategyBoardDTO;
 import com.solo.LoLStrategy.user.CustomUserDetails;
 import com.solo.LoLStrategy.user.User;
 import com.solo.LoLStrategy.user.UserRepository;
@@ -23,7 +23,7 @@ public class LoLStrategyApplication {
 		SpringApplication.run(LoLStrategyApplication.class, args);
 	}
 
-	// johh 아이디 생성
+	// cammel 아이디 생성
 
 	@Bean
 	public CommandLineRunner demo(UserRepository userRepository, BoardRepository boardResRepository,

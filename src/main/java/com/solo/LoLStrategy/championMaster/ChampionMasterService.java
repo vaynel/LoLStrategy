@@ -20,9 +20,8 @@ public class ChampionMasterService {
 	
 	@Autowired
 	private LoLAPIService loLAPIService;
-	
+	public Map<String,Object> dd(){
 	// 챌린저 티어 정보 얻기
-	public Map<String, Object> getCHALLENGERS() {
 		ObjectMapper mapper = new ObjectMapper();
 		List<LeagueItemDTO> challengers = mapper.convertValue(loLAPIService.getChallengers().get("entries"), new TypeReference<List<LeagueItemDTO>>(){});
 		
