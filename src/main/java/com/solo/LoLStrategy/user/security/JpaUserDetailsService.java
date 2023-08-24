@@ -1,5 +1,7 @@
 package com.solo.LoLStrategy.user.security;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,6 +22,7 @@ public class JpaUserDetailsService implements UserDetailsService {
 	private UserRepository userRepository;
 
 	@Override
+	@Transactional
 	public CustomUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		log.info("loadUserByUsername : "+username);
 		

@@ -32,9 +32,9 @@ public class LoLStrategyApplication {
 
 			// 유저 한명 생성하기
 			User user = createUser();
+			System.out.println(user.getPassword());
 			userService.register(user);
-
-			// userService.updateUserData(user);
+			userService.updateUserData(user);
 			
 			// 게시판 2개 만들기 
 //			StrategyBoard board1 = createBoard(1);
@@ -44,18 +44,14 @@ public class LoLStrategyApplication {
 
 		};
 	}
-	
-	
-	
-	
+
 	
 	// cammel 유저 만들기
 	public User createUser() {
 		User user = new User();
-		user.setId(1);
 		user.setGameId("cammel");
 		user.setUserName("cammel");
-		user.setPassword(new BCryptPasswordEncoder().encode("1234"));
+		user.setPassword("123");
 		user.setAlgorithm(EncryptionAlgorithm.BCRYPT);
 		return user;
 	}
@@ -63,7 +59,7 @@ public class LoLStrategyApplication {
 	// 게시판 하나 생성
 	public StrategyBoard createBoard(Integer i) {
 		StrategyBoard board = new StrategyBoard();
-		board.setChampion("vayne");
+		board.setChampion("vayne"); 
 		board.setContents("테스트" + i);
 		board.setDate(new Date());
 		board.setSubject("테스트");

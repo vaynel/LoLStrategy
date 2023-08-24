@@ -51,15 +51,18 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 	}
 
 	private Authentication checkPassword(CustomUserDetails user, String rawPassword,PasswordEncoder passwordEncoder) {
+		System.out.println(user.getPassword());
+		System.out.println(rawPassword);
+		System.out.println(passwordEncoder.matches(rawPassword, user.getPassword()));
 		if(passwordEncoder.matches(rawPassword, user.getPassword())) {
-			System.out.println(user.getUsername()+"님 비밀번호 인코딩 결과 성공");
+			log.info(user.getUsername()+"님 비밀번호 인코딩 결과 성공");
 			return new UsernamePasswordAuthenticationToken(
 					user.getUsername(),
 					user.getPassword(),
 					user.getAuthorities()
 					);
 		}else {
-			System.out.println("로그인 실패");
+			log.info("로그인 실패");
 			throw new BadCredentialsException("Bad credentials");
 		}
 	}

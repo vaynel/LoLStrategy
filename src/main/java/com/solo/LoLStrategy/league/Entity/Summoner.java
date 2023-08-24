@@ -13,8 +13,11 @@ import javax.persistence.OneToOne;
 import com.solo.LoLStrategy.user.User;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
 public class Summoner {
 	

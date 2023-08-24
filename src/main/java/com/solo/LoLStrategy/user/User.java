@@ -44,7 +44,7 @@ public class User {
 	private String email;
 	private Date joinDate;
 	
-	@OneToOne(mappedBy = "user")
+	@OneToOne(mappedBy = "user",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 	private Summoner summoner;
 	
 	

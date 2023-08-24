@@ -47,6 +47,8 @@ public class UserService {
 	}
 
 	public void register(User user) {
+		log.info(user.getGameId()+"회원가입중입니다.");
+		user.setUserName(user.getGameId());
 		user.setAlgorithm(EncryptionAlgorithm.BCRYPT);
 		user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
 		user.setJoinDate(new Date());
@@ -129,7 +131,6 @@ public class UserService {
 			if(leagueE.getQueueType().equals(QueueType.RANKED_SOLO_5x5)) leagueEntry=leagueE;
 		}
 		
-		log.info(leagueEntry.toString());
 		League league= League.builder()
 				.summoner(summoner)
 				.leaguePoints(leagueEntry.getLeaguePoints())
@@ -139,6 +140,7 @@ public class UserService {
 				.build();
 		
 		leagueRepository.save(league);
+		log.info(user.getGameId()+"소환사의 정보를 업데이트완료");
 		
 	}
 

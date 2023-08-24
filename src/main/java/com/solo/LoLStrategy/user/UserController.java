@@ -36,9 +36,11 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public void register(User user) {
-		log.info("회원가입을 진행합니다");
+	public String register(User user) {
+		log.info(user.getGameId()+"회원가입을 진행합니다");
 		userService.register(user); 
+		userService.updateUserData(user);
+		return "login.html";
 	}
 
 	@RequestMapping(value = "/main", method = RequestMethod.GET)
