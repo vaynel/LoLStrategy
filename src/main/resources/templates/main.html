@@ -26,11 +26,11 @@
 			<ul>
 				<li>소환사 : <span th:text="${MyRiotAccount.name}"><</span></li>
 				<li>LV : <span th:text="${MyRiotAccount.summonerLevel}"></span></li>
-				<li><span th:text="${MyLeague[0].tier}"></span> <span
-					th:text="${MyLeague[0].rank}"></span></li>
+				<li><span th:text="${MyLeague.tier}"></span> <span
+					th:text="${MyLeague.tierRank}"></span></li>
 				<li>
-				<span th:text="${MyLeague[0].wins}"></span> <span th:text="승"></span>
-				 <span th:text="${MyLeague[0].losses}"></span> <span th:text="패"></span></li>
+				<span th:text="${MyLeague.wins}"></span> <span th:text="승"></span>
+				 <span th:text="${MyLeague.losses}"></span> <span th:text="패"></span></li>
 			</ul>
 		</div>
 		<br>

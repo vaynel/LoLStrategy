@@ -67,6 +67,7 @@ public class LoLAPIService {
 		return response;
 	}
 
+	
 	// 매치의 ID를 받습니다. 
 	public String[] returnMatchList(String puuid) {
 		WebClient webClient = WebClient.builder()

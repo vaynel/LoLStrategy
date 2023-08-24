@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import org.springframework.security.core.Authentication;
+
 import com.solo.LoLStrategy.league.Entity.Summoner;
 import com.solo.LoLStrategy.user.security.Authority;
 import com.solo.LoLStrategy.user.security.EncryptionAlgorithm;
@@ -31,21 +33,20 @@ public class User {
 	@Id
 	@GeneratedValue
 	private Integer id;
-	
+
 	private String userName;
 	private String gameId;
 	private String password;
-	
+
 	@Enumerated(EnumType.STRING)
 	private EncryptionAlgorithm algorithm;
-	
-	@OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
+
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
 	private List<Authority> authorities;
 	private String email;
 	private Date joinDate;
-	
-	@OneToOne(mappedBy = "user",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+
+	@OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Summoner summoner;
-	
-	
+
 }

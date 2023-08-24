@@ -17,6 +17,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.solo.LoLStrategy.league.LeagueRepository;
 import com.solo.LoLStrategy.league.SummonerRepository;
 import com.solo.LoLStrategy.league.Entity.League;
+import com.solo.LoLStrategy.league.Entity.Seoson;
+import com.solo.LoLStrategy.league.Entity.SeosonRepository;
 import com.solo.LoLStrategy.league.Entity.Summoner;
 import com.solo.LoLStrategy.lol.LoLAPIService;
 import com.solo.LoLStrategy.lol.VO.LeagueEntryDTO;
@@ -32,6 +34,9 @@ public class UserService {
 
 	@Autowired
 	public UserRepository userRepository;
+	
+	@Autowired
+	public SeosonRepository seosonRepository;
 	
 	@Autowired
 	public SummonerRepository summonerRepository;
@@ -59,6 +64,8 @@ public class UserService {
 		log.info(summoner.getUser().getGameId()+"등록완료");
 	}
 	
+	
+	//최근에 사용한 챔피언과 몇번 사용했는지 반환
 	public String returnRecentlyChampions(ParticipantDTO[] myParticipants) {
 		
 		String result ="";
@@ -93,7 +100,7 @@ public class UserService {
 	}
 	
 	
-
+	// matchId를 통해서 나의 전적을 받아옴
 	public ParticipantDTO[] getMatchListDetails(String[] matchList, Summoner myRiotAccount) {
 
 		ParticipantDTO[] myParticipants = new ParticipantDTO[20];
@@ -120,7 +127,7 @@ public class UserService {
 		return myParticipants;
 	}
 	
-	
+	// 소환사의 정보를 업데이트 -> league 정보를 업데이트 
 	public void updateUserData(User user ) {
 		log.info(user.getGameId()+"소환사의 정보를 업데이트합니다");
 		Summoner summoner = summonerRepository.findSummonerByUser(user);
@@ -131,16 +138,44 @@ public class UserService {
 			if(leagueE.getQueueType().equals(QueueType.RANKED_SOLO_5x5)) leagueEntry=leagueE;
 		}
 		
+		
 		League league= League.builder()
 				.summoner(summoner)
 				.leaguePoints(leagueEntry.getLeaguePoints())
 				.tierRank(leagueEntry.getRank())
 				.tier(leagueEntry.getTier())
-				.season("13-2")
+				.wins(leagueEntry.getWins())
+				.losses(leagueEntry.getLosses())
+				.season(seosonRepository.findBySeoson("13-2"))
 				.build();
 		
 		leagueRepository.save(league);
 		log.info(user.getGameId()+"소환사의 정보를 업데이트완료");
+		
+	}
+
+	// 소환사를 user로 찾음
+	public Summoner getSummonerById(User user) {
+		return summonerRepository.findSummonerByUser(user);
+	}
+	
+	// 소환사를 name으로 찾음
+	public Summoner getSummonerByGameId(String name) {
+		return summonerRepository.findSummonerByName(name);
+	}
+	
+	
+	// 리그 정보를 소환사와 시즌을 검색해서 찾음
+	public League getLeagueBySummoner(Summoner summoner) {
+		List<League> LeagueList = leagueRepository.findAllLeagueBySummoner(summoner);
+		League thisLeague = new League();
+		for (League league : LeagueList) {
+			if(league.getSeason().getSeoson().equals("13-2")) {
+				thisLeague=league;
+				return thisLeague;
+			}
+		}
+		return thisLeague;
 		
 	}
 
