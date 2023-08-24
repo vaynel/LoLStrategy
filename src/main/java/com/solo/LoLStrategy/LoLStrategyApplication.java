@@ -57,8 +57,8 @@ public class LoLStrategyApplication {
 	}
 
 	// 게시판 하나 생성
-	public StrategyBoard createBoard(Integer i) {
-		StrategyBoard board = new StrategyBoard();
+	public StrategyBoardDTO createBoard(Integer i) {
+		StrategyBoardDTO board = new StrategyBoardDTO();
 		board.setChampion("vayne"); 
 		board.setContents("테스트" + i);
 		board.setDate(new Date());

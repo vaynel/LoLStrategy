@@ -6,14 +6,12 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.solo.LoLStrategy.championMaster.ChampionMasteryDto;
-import com.solo.LoLStrategy.league.Entity.Summoner;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.solo.LoLStrategy.championMaster.DTO.ChampionMasteryDto;
+import com.solo.LoLStrategy.championMaster.ChampionMasteryDto;
+import com.solo.LoLStrategy.league.Entity.Summoner;
 import com.solo.LoLStrategy.lol.VO.LeagueEntryDTO;
 import com.solo.LoLStrategy.lol.VO.LeagueItemDTO;
-import com.solo.LoLStrategy.lol.VO.SummonerDTO;
 
 import lombok.extern.slf4j.Slf4j;
 

@@ -1,8 +1,5 @@
-<<<<<<<< HEAD:src/main/java/com/solo/LoLStrategy/common/champions/Champions.java
-package com.solo.LoLStrategy.common.champions;
-========
+
 package com.solo.LoLStrategy.common.champion;
->>>>>>>> strategy:src/main/java/com/solo/LoLStrategy/common/champion/Champions.java
 
 public enum Champions{
 	

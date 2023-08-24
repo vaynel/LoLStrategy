@@ -1,13 +1,16 @@
 package com.solo.LoLStrategy.LoLAPITest;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -16,10 +19,13 @@ import com.solo.LoLStrategy.championMaster.ChampionMasterService;
 import com.solo.LoLStrategy.league.LeagueRepository;
 import com.solo.LoLStrategy.league.SummonerRepository;
 import com.solo.LoLStrategy.league.Entity.League;
+import com.solo.LoLStrategy.lol.LoLAPIService;
 import com.solo.LoLStrategy.lol.VO.LeagueItemDTO;
 import com.solo.LoLStrategy.user.User;
 import com.solo.LoLStrategy.user.UserService;
 import com.solo.LoLStrategy.user.security.EncryptionAlgorithm;
+
+import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LoLAPITest {
 
