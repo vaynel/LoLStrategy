@@ -8,8 +8,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import com.solo.LoLStrategy.common.board.BoardRepository;
+import com.solo.LoLStrategy.league.SeosonRepository;
 import com.solo.LoLStrategy.league.Entity.Seoson;
-import com.solo.LoLStrategy.league.Entity.SeosonRepository;
 import com.solo.LoLStrategy.strategy.DTO.StrategyBoard;
 import com.solo.LoLStrategy.user.User;
 import com.solo.LoLStrategy.user.UserRepository;

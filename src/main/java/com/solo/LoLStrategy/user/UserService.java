@@ -14,11 +14,14 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.solo.LoLStrategy.league.ChampionsUsedRepository;
 import com.solo.LoLStrategy.league.LeagueRepository;
+import com.solo.LoLStrategy.league.MatchListRepoistory;
+import com.solo.LoLStrategy.league.SeosonRepository;
 import com.solo.LoLStrategy.league.SummonerRepository;
+import com.solo.LoLStrategy.league.Entity.ChampionsUsed;
 import com.solo.LoLStrategy.league.Entity.League;
-import com.solo.LoLStrategy.league.Entity.Seoson;
-import com.solo.LoLStrategy.league.Entity.SeosonRepository;
+import com.solo.LoLStrategy.league.Entity.MatchList;
 import com.solo.LoLStrategy.league.Entity.Summoner;
 import com.solo.LoLStrategy.lol.LoLAPIService;
 import com.solo.LoLStrategy.lol.VO.LeagueEntryDTO;
@@ -33,6 +36,9 @@ import lombok.extern.slf4j.Slf4j;
 public class UserService {
 
 	@Autowired
+	public MatchListRepoistory matchListRepoistory;
+	
+	@Autowired
 	public UserRepository userRepository;
 	
 	@Autowired
@@ -43,6 +49,9 @@ public class UserService {
 	
 	@Autowired
 	public LeagueRepository leagueRepository;
+	
+	@Autowired
+	public ChampionsUsedRepository championsUsedRepository;
 
 	@Autowired
 	public LoLAPIService lolAPIService;
@@ -61,6 +70,9 @@ public class UserService {
 		Summoner summoner = lolAPIService.getSummonerV4ById(user.getGameId());
 		summoner.setUser(user);
 		summonerRepository.save(summoner);
+		MatchList match = new MatchList();
+		match.setSummoner(summoner);
+		matchListRepoistory.save(match);
 		log.info(summoner.getUser().getGameId()+"등록완료");
 	}
 	
@@ -131,28 +143,21 @@ public class UserService {
 	public void updateUserData(User user ) {
 		log.info(user.getGameId()+"소환사의 정보를 업데이트합니다");
 		Summoner summoner = summonerRepository.findSummonerByUser(user);
-		
-		LeagueEntryDTO[] LeagueEntries = lolAPIService.getLeagueV4BySummonerId(summoner.getId());
-		LeagueEntryDTO leagueEntry = new LeagueEntryDTO();
-		for (LeagueEntryDTO leagueE : LeagueEntries) {
-			if(leagueE.getQueueType().equals(QueueType.RANKED_SOLO_5x5)) leagueEntry=leagueE;
-		}
-		
-		
-		League league= League.builder()
-				.summoner(summoner)
-				.leaguePoints(leagueEntry.getLeaguePoints())
-				.tierRank(leagueEntry.getRank())
-				.tier(leagueEntry.getTier())
-				.wins(leagueEntry.getWins())
-				.losses(leagueEntry.getLosses())
-				.season(seosonRepository.findBySeoson("13-2"))
-				.build();
-		
-		leagueRepository.save(league);
+		updateLeagueDataBySummoner(summoner); // 리그 정보를 업데이트 
 		log.info(user.getGameId()+"소환사의 정보를 업데이트완료");
-		
 	}
+	
+	// 소환사의 정보를 업데이트
+	public void updateSummonerData(Summoner summoner) {
+		log.info(summoner.getName()+"소환사의 정보를 업데이트합니다");
+		updateLeagueDataBySummoner(summoner); // 리그 정보를 업데이트 
+		updateChampionsUsedBySummoner(summoner);
+	}
+	
+	
+	
+
+	
 
 	// 소환사를 user로 찾음
 	public Summoner getSummonerById(User user) {
@@ -176,6 +181,81 @@ public class UserService {
 			}
 		}
 		return thisLeague;
+		
+	}
+	
+	// 리그 정보를 업데이트 합니다.
+	private void updateLeagueDataBySummoner(Summoner summoner) {
+		
+		LeagueEntryDTO[] LeagueEntries = lolAPIService.getLeagueV4BySummonerId(summoner.getId());
+		LeagueEntryDTO leagueEntry = new LeagueEntryDTO();
+		for (LeagueEntryDTO leagueE : LeagueEntries) {
+			if(leagueE.getQueueType().equals(QueueType.RANKED_SOLO_5x5)) leagueEntry=leagueE;
+		}
+		
+		
+		League league= League.builder()
+				.summoner(summoner)
+				.leaguePoints(leagueEntry.getLeaguePoints())
+				.tierRank(leagueEntry.getRank())
+				.tier(leagueEntry.getTier())
+				.wins(leagueEntry.getWins())
+				.losses(leagueEntry.getLosses())
+				.season(seosonRepository.findBySeoson("13-2"))
+				.build();
+		
+		leagueRepository.save(league);
+	}
+	
+	// 챔피언 데이터를 업데이트 합니다 .
+	public void updateChampionsUsedBySummoner(Summoner summoner) {
+		String[] Matchs = lolAPIService.returnMatchList(summoner.getPuuid()); // 소환사가 최근에 한 게임 매치 List(20개)
+		ParticipantDTO[] myParticipants=getMatchListDetails(Matchs,summoner);
+		
+		for (int i = 19; i >= 0; i--) {
+			MatchList matchList = new MatchList();	
+			if(checkMatchId(Matchs[i],summoner)) {
+				matchList = matchListRepoistory.findBySummoner(summoner);
+				matchList.setMatchId(Matchs[i]);
+				matchListRepoistory.save(matchList);
+				ChampionsUsed championsUsed = new ChampionsUsed(myParticipants[i]);
+				try {
+					
+					// 여기 nullpointException
+					ChampionsUsed CurrentchampionsUsed = championsUsedRepository.findBySummonerAndChampionName(summoner,myParticipants[i].getChampionName());
+					CurrentchampionsUsed.setAssists(CurrentchampionsUsed.getAssists()+championsUsed.getAssists());
+					CurrentchampionsUsed.setDeaths(CurrentchampionsUsed.getDeaths()+championsUsed.getDeaths());
+					CurrentchampionsUsed.setKills(CurrentchampionsUsed.getKills()+championsUsed.getKills());
+					CurrentchampionsUsed.setPlayGames(CurrentchampionsUsed.getPlayGames()+1);
+					CurrentchampionsUsed.setGoldSpent(CurrentchampionsUsed.getGoldSpent()+championsUsed.getGoldSpent());
+					CurrentchampionsUsed.setSummoner(summoner);
+					championsUsedRepository.save(CurrentchampionsUsed);
+					continue;
+					
+				} finally {
+					championsUsed.setSummoner(summoner);
+					championsUsedRepository.save(championsUsed);
+				}
+				
+				
+			}
+		}
+		
+		
+		  
+	}
+	
+	
+	// 배치 번호 확인하기 
+	public boolean checkMatchId(String matchs, Summoner summoner) {
+		try {
+			MatchList matchList = matchListRepoistory.findBySummoner(summoner);
+			return Long.valueOf(matchs.substring(3)) > Long.valueOf(matchList.getMatchId().substring(3));
+		}
+		finally {
+			return true;
+		}
+		
 		
 	}
 

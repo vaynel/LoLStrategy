@@ -18,7 +18,7 @@ public class Seoson {
 
 	@Id
 	@GeneratedValue
-	private Long id;
+	private Integer id;
 	private String seoson;
 	
 	@OneToMany(mappedBy = "summoner")
