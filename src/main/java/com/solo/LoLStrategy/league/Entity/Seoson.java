@@ -16,6 +16,12 @@ import lombok.Setter;
 @Setter
 public class Seoson {
 
+	public Seoson(Integer id,String seoson) {
+		this.id = id;
+		this.seoson =seoson;
+	}
+	public Seoson() {}
+
 	@Id
 	@GeneratedValue
 	private Integer id;
