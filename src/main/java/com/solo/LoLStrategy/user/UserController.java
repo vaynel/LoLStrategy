@@ -48,7 +48,7 @@ public class UserController {
 		Summoner MyRiotAccount = userService.getSummonerByGameId(a.getName()); // 소환사 정보 
 		League MyLeague = userService.getLeagueBySummoner(MyRiotAccount); // 소환사의 리그 정보
 		
-		//userService.updateSummonerData(MyRiotAccount); 조금더 생각해봅시다!!
+		userService.updateSummonerData(MyRiotAccount); 
 				
 		String[] MatchList = lolAPIService.returnMatchList(MyRiotAccount.getPuuid()); // 소환사가 최근에 한 게임 매치 List(20개)
 		ParticipantDTO[] myParticipants=userService.getMatchListDetails(MatchList,MyRiotAccount);

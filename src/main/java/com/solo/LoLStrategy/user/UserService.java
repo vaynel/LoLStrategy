@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import com.solo.LoLStrategy.league.SummonerRepository;
 import com.solo.LoLStrategy.league.Entity.ChampionsUsed;
 import com.solo.LoLStrategy.league.Entity.League;
 import com.solo.LoLStrategy.league.Entity.MatchList;
+import com.solo.LoLStrategy.league.Entity.Seoson;
 import com.solo.LoLStrategy.league.Entity.Summoner;
 import com.solo.LoLStrategy.lol.LoLAPIService;
 import com.solo.LoLStrategy.lol.VO.LeagueEntryDTO;
@@ -59,17 +61,22 @@ public class UserService {
 	public List<User> findAll() {
 		return userRepository.findAll();
 	}
+	
+	private static Seoson thisSeoson = new Seoson(1,"13-2");
 
 	public void register(User user) {
 		log.info(user.getGameId()+"회원가입중입니다.");
+		// 유저 정보 저장하기 
 		user.setUserName(user.getGameId());
 		user.setAlgorithm(EncryptionAlgorithm.BCRYPT);
 		user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
 		user.setJoinDate(new Date());
 		userRepository.save(user);
+		// 소환사 저장하기 
 		Summoner summoner = lolAPIService.getSummonerV4ById(user.getGameId());
 		summoner.setUser(user);
 		summonerRepository.save(summoner);
+		// 소환사 매치 정보 저장
 		MatchList match = new MatchList();
 		match.setSummoner(summoner);
 		matchListRepoistory.save(match);
@@ -151,7 +158,7 @@ public class UserService {
 	public void updateSummonerData(Summoner summoner) {
 		log.info(summoner.getName()+"소환사의 정보를 업데이트합니다");
 		updateLeagueDataBySummoner(summoner); // 리그 정보를 업데이트 
-		updateChampionsUsedBySummoner(summoner);
+		updateChampionsUsedBySummoner(summoner);  // 리스에서 사용한 챔피언 정보 업데이트 
 	}
 	
 	
@@ -219,25 +226,42 @@ public class UserService {
 				matchList.setMatchId(Matchs[i]);
 				matchListRepoistory.save(matchList);
 				ChampionsUsed championsUsed = new ChampionsUsed(myParticipants[i]);
-				try {
+
 					
-					// 여기 nullpointException
-					ChampionsUsed CurrentchampionsUsed = championsUsedRepository.findBySummonerAndChampionName(summoner,myParticipants[i].getChampionName());
-					CurrentchampionsUsed.setAssists(CurrentchampionsUsed.getAssists()+championsUsed.getAssists());
-					CurrentchampionsUsed.setDeaths(CurrentchampionsUsed.getDeaths()+championsUsed.getDeaths());
-					CurrentchampionsUsed.setKills(CurrentchampionsUsed.getKills()+championsUsed.getKills());
-					CurrentchampionsUsed.setPlayGames(CurrentchampionsUsed.getPlayGames()+1);
-					CurrentchampionsUsed.setGoldSpent(CurrentchampionsUsed.getGoldSpent()+championsUsed.getGoldSpent());
-					CurrentchampionsUsed.setSummoner(summoner);
-					championsUsedRepository.save(CurrentchampionsUsed);
-					continue;
-					
-				} finally {
-					championsUsed.setSummoner(summoner);
-					championsUsedRepository.save(championsUsed);
-				}
-				
-				
+					Optional<ChampionsUsed> CurrentchampionsUsed = Optional.ofNullable(championsUsedRepository.findBySummonerAndChampionName(summoner,myParticipants[i].getChampionName()));
+					//CurrentchampionsUsed가 null일때 새로운 값을 넣는다.
+					if(!CurrentchampionsUsed.isPresent()) {
+						championsUsed.setSummoner(summoner);
+						championsUsed.setPlayGames(1);
+						championsUsed.setSeason(thisSeoson);
+						if(myParticipants[i].getWin()) {
+							championsUsed.setWins(1);
+							championsUsed.setLosses(0);
+						}
+						else {
+							championsUsed.setLosses(1);
+							championsUsed.setWins(0);
+						}
+						
+						championsUsedRepository.save(championsUsed);
+						continue;
+					}
+					else {
+						// null이 아닌경우 정보를 업데이트를 한다. 
+						CurrentchampionsUsed.get().setAssists(CurrentchampionsUsed.get().getAssists()+championsUsed.getAssists());
+						CurrentchampionsUsed.get().setDeaths(CurrentchampionsUsed.get().getDeaths()+championsUsed.getDeaths());
+						CurrentchampionsUsed.get().setKills(CurrentchampionsUsed.get().getKills()+championsUsed.getKills());
+						CurrentchampionsUsed.get().setPlayGames(CurrentchampionsUsed.get().getPlayGames()+1);
+						CurrentchampionsUsed.get().setGoldSpent(CurrentchampionsUsed.get().getGoldSpent()+championsUsed.getGoldSpent());
+						CurrentchampionsUsed.get().setSummoner(summoner);
+						if(myParticipants[i].getWin()) {
+							CurrentchampionsUsed.get().setWins(CurrentchampionsUsed.get().getWins()+1);
+						}
+						else {
+							CurrentchampionsUsed.get().setLosses(CurrentchampionsUsed.get().getLosses()+1);
+						}
+						championsUsedRepository.save(CurrentchampionsUsed.get());
+					}				
 			}
 		}
 		
