@@ -283,4 +283,11 @@ public class UserService {
 		
 	}
 
+	// 최근데이터가 같은지 알려줌 
+	public boolean checkRecentlyMatch(Summoner myRiotAccount) {
+		String recentlyMatch = lolAPIService.returnRecentlyMatchId(myRiotAccount.getPuuid());
+		MatchList dataMatchId = matchListRepoistory.findBySummoner(myRiotAccount);
+		return recentlyMatch.equals(dataMatchId.getMatchId());
+	}
+
 }

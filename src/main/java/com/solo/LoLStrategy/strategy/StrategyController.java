@@ -1,8 +1,12 @@
 package com.solo.LoLStrategy.strategy;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -13,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mysql.cj.x.protobuf.MysqlxCrud.Order.Direction;
 import com.solo.LoLStrategy.common.board.BoardService;
+import com.solo.LoLStrategy.common.champions.Champions;
 import com.solo.LoLStrategy.strategy.DTO.StrategyBoard;
 
 import lombok.extern.slf4j.Slf4j;
@@ -29,10 +35,11 @@ public class StrategyController {
 	@RequestMapping(value = "/strategy/{champion}")
 	public String champion(@PathVariable("champion") String champion, Model model) {
 		List<StrategyBoard> BoardList = boardService.findBoardByChampion(champion);
+		List<Champions> champions = Stream.of(Champions.values()).collect(Collectors.toList());
 		log.info(champion+" 챔피언 공략");
-		log.info(BoardList.toString());
 		model.addAttribute("champion", champion);
 		model.addAttribute("BoardList", BoardList);
+		model.addAttribute("champions", champions);
 		
 		
 		return "strategy.html";

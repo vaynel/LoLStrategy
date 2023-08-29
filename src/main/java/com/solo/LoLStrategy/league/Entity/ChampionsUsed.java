@@ -8,12 +8,16 @@ import javax.persistence.ManyToOne;
 
 import com.solo.LoLStrategy.lol.VO.ParticipantDTO;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ChampionsUsed {
 
 
