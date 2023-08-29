@@ -1,6 +1,7 @@
 package com.solo.LoLStrategy;
 
 import java.util.Date;
+import java.util.Optional;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -36,9 +37,14 @@ public class LoLStrategyApplication {
 			seosonRepository.save(setSeoson()); 
 			// 유저 한명 생성하기
 			
-			User user = createUser();
-			userService.register(user);
-			userService.updateUserData(user);
+			Optional<User> user = userRepository.findById(2);
+			System.out.println(user);
+			if(user.isEmpty()) {
+				user = Optional.ofNullable(createUser());
+				userService.register(user.get());
+				userService.updateUserData(user.get());
+			}
+			
 
 			// 게시판 2개 만들기
 //			StrategyBoard board1 = createBoard(1);

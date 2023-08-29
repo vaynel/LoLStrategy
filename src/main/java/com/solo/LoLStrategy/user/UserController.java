@@ -48,8 +48,12 @@ public class UserController {
 		Summoner MyRiotAccount = userService.getSummonerByGameId(a.getName()); // 소환사 정보 
 		League MyLeague = userService.getLeagueBySummoner(MyRiotAccount); // 소환사의 리그 정보
 		
-		userService.updateSummonerData(MyRiotAccount); 
-				
+		if(userService.checkRecentlyMatch(MyRiotAccount)) {
+			log.info(MyRiotAccount.getName()+"의 최신정보 업데이트");
+			userService.updateSummonerData(MyRiotAccount); // 챔피언 사용정보 업데이트			
+		}
+		
+		// 이부분들을 고쳐야합니다... 너무 LOLAPI를 불러와서 제한에 걸리고, api를 사용하니 너무 느립니다. 
 		String[] MatchList = lolAPIService.returnMatchList(MyRiotAccount.getPuuid()); // 소환사가 최근에 한 게임 매치 List(20개)
 		ParticipantDTO[] myParticipants=userService.getMatchListDetails(MatchList,MyRiotAccount);
 		String recentlyChampions = userService.returnRecentlyChampions(myParticipants);

@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LoLAPIService {
 
-	private static String key = "RGAPI-35a04077-6040-4acd-a30d-8c8565d90ab6";
+	private static String key = "RGAPI-bc806e16-ab7d-4b17-b706-44deb8c95662";
 
 	public void get() {
 		// webClient 기본 설정
@@ -81,6 +81,22 @@ public class LoLAPIService {
 				.header("Accept-Language", "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7")
 				.header("Accept-Charset", "application/x-www-form-urlencoded; charset=UTF-8").retrieve()
 				.bodyToMono(String[].class).block();
+		return response;
+	}
+	
+	// 최근 매치 하나 받기
+	public String returnRecentlyMatchId(String puuid) {
+		WebClient webClient = WebClient.builder()
+				.baseUrl("https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/").build();
+
+		// api 요청
+		String response = webClient.get()
+				.uri(uriBuilder -> uriBuilder.path(puuid + "/ids").queryParam("start", 0).queryParam("count", 1)
+						.build())
+				.header("Origin", "https://developer.riotgames.com").header("X-Riot-Token", key)
+				.header("Accept-Language", "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7")
+				.header("Accept-Charset", "application/x-www-form-urlencoded; charset=UTF-8").retrieve()
+				.bodyToMono(String.class).block();
 		return response;
 	}
 	
