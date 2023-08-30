@@ -1,0 +1,19 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+<th:block th:fragment="championsFragment">
+	<div class="container-full mt-3" >
+		<div class="row g-3 mx-0 overflow-auto" style="max-height: 200px;">
+			<div th:each="champ : ${champions}" class="col-6 col-md-4 col-lg-4">
+				<div class=" bg-light rounded-3 shadow h-100 px-1">
+					<a class="d-block text-center p-2 text-info" 
+					th:onclick="|location.href='@{/strategy/{champName}(champName=${champ})}'|"
+					th:text="${champ}"></a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<br>
+</th:block>
+</html>

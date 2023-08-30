@@ -13,6 +13,8 @@
 <title>챔피언 공략글</title>
 </head>
 <body>
+
+<th:block th:replace ="header :: headerFragment"></th:block>
 	<div class="container">
 
     <!-- 추가 -->
@@ -20,41 +22,46 @@
 
     <div>
         <label for="boardId" >ID</label>
-        <input type="text" id="Id" name="Id" class="form-control" value="1" th:value="${board.id}" readonly>
+        <input type="text" id="Id" name="Id" class="form-control"  th:value="${board.id}" readonly>
     </div>
     <div>
         <label for="boardSubject" >제목</label>
-        <input type="text" id="subject" name="subject" class="form-control" value="상품A" th:value="${board.subject}" readonly>
+        <input type="text" id="subject" name="subject" class="form-control"  th:value="${board.subject}" readonly>
     </div>
     <div>
         <label for="name" >작성자</label>
-        <input type="text" id="write" name="write" class="form-control" value="작성자" th:value="${board.write}" readonly>
+        <input type="text" id="write" name="write" class="form-control"  th:value="${board.writer}" readonly>
     </div>
 
     <div>
         <label for="regdate" >등록일</label>
-        <input type="text" id="date" name="date" class="form-control" value="10" th:value="${board.date}" readonly>
+        <input type="text" id="date" name="date" class="form-control"  th:value="${board.date}" readonly>
     </div>
 
     <div>
         <label for="contents" >글 내용</label>
-        <input type="text" id="contents" name="contents" class="form-control" value="10" th:value="${board.contents}" readonly>
+        <input type="text" id="contents" name="contents" class="form-control" th:value="${board.contents}" readonly>
     </div>
 
-    <hr class="my-4">
+    <br class="my-4">
 
     <div class="row">
         <div class="col">
-            <button class="w-100 btn btn-primary btn-lg"> 수정</button>
+            <button class="h-100 w-100 btn btn-primary btn-lg"
+           			 th:onclick="|location.href='@{/strategy/update(champion=${board.champion},id=${board.id})}'|"
+                    type="button"> 수정</button>
+                    
+                    
         </div>
         <div class="col">
-            <button class="w-100 btn btn-secondary btn-lg"
+            <button class="h-100 w-100 btn btn-secondary btn-lg"
+            		th:onclick="|location.href='@{/strategy/{champion}(champion=${board.champion})}'|"
                     type="button" >목록으로</button>
         </div>
 
         <div class="col">
-            <button class="w-100 btn btn-secondary btn-lg"
-                    onclick="location.href='strategy/${champion}.html'"
+            <button class="h-100 w-100 btn btn-secondary btn-lg"
+                    th:onclick="|location.href='@{/strategy/delete(champion=${board.champion},id=${board.id})}'|"
                     type="button">삭제</button>
         </div>
     </div>

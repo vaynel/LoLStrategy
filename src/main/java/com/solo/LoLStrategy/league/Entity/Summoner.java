@@ -36,5 +36,8 @@ public class Summoner {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id",referencedColumnName = "id")
 	private User user;
+	
+	@OneToOne(mappedBy = "summoner")
+	private MatchList MatchList;
 
 }

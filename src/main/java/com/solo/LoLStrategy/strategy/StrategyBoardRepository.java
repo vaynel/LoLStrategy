@@ -1,7 +1,6 @@
 package com.solo.LoLStrategy.strategy;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -13,5 +12,5 @@ public interface StrategyBoardRepository extends JpaRepository<StrategyBoardDTO,
 	
 	List<StrategyBoardDTO> findAllStrategyBoardByChampion(String champion);
 
-	StrategyBoardDTO findStrategyBoardById(String id);
+	StrategyBoard findStrategyBoardById(Integer id);
 }
