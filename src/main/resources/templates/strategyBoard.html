@@ -43,20 +43,25 @@
         <input type="text" id="contents" name="contents" class="form-control" th:value="${board.contents}" readonly>
     </div>
 
-    <hr class="my-4">
+    <br class="my-4">
 
     <div class="row">
         <div class="col">
-            <button class="w-100 btn btn-primary btn-lg"> 수정</button>
+            <button class="h-100 w-100 btn btn-primary btn-lg"
+           			 th:onclick="|location.href='@{/strategy/update(champion=${board.champion},id=${board.id})}'|"
+                    type="button"> 수정</button>
+                    
+                    
         </div>
         <div class="col">
-            <button class="w-100 btn btn-secondary btn-lg"
+            <button class="h-100 w-100 btn btn-secondary btn-lg"
+            		th:onclick="|location.href='@{/strategy/{champion}(champion=${board.champion})}'|"
                     type="button" >목록으로</button>
         </div>
 
         <div class="col">
-            <button class="w-100 btn btn-secondary btn-lg"
-                    onclick="location.href='strategy/${champion}.html'"
+            <button class="h-100 w-100 btn btn-secondary btn-lg"
+                    th:onclick="|location.href='@{/strategy/delete(champion=${board.champion},id=${board.id})}'|"
                     type="button">삭제</button>
         </div>
     </div>
