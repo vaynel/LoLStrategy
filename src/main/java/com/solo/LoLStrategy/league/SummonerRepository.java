@@ -10,5 +10,7 @@ import com.solo.LoLStrategy.user.User;
 public interface SummonerRepository extends JpaRepository<Summoner, String>{
 	
 	Summoner findSummonerByUser(User user);
+
+	Summoner findSummonerByName(String name);
 	
 }

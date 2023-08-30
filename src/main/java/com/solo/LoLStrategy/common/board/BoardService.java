@@ -28,9 +28,13 @@ public class BoardService {
 		return strategyBoardRepository.findAllStrategyBoardByChampion(Champion);
 	}
 
-	public StrategyBoardDTO findBoardById(String id) {
+	public StrategyBoard findBoardById(Integer id) {
 		
 		return strategyBoardRepository.findStrategyBoardById(id);
+	}
+
+	public void deleteStrategyBoard(Integer id) {
+		boardRepository.deleteById(id);
 	}
 
 }

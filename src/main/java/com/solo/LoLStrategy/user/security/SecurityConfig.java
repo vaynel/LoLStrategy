@@ -33,7 +33,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
 		.loginProcessingUrl("/login")
 		.usernameParameter("id")
         .passwordParameter("password")
-		.defaultSuccessUrl("/main");
+		.defaultSuccessUrl("/main")
+		.and()
+		.logout()
+		.logoutUrl("/logout")
+		.logoutSuccessUrl("/login")
+		.logoutSuccessHandler((request, response, authentication) -> {
+             response.sendRedirect("/login");
+         }) // 로그아웃 성공 핸들러
+         .deleteCookies("remember-me");;
 		
 		/*
 		 * http .authorizeRequests()

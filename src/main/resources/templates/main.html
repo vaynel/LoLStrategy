@@ -12,25 +12,29 @@
 <link rel="stylesheet" th:href="@{/css/main.css}">
 </head>
 <body>
+	
+<th:block th:replace ="header :: headerFragment"></th:block>
+
 	<div class="container-fluid text-center">
 	
-		<div class="row text-center">
+		<!-- <div class="row text-center">
 		<p >롤 전략 사이트</p>
 			<button class="btn btn-primary float-end"
 		                    onclick="location.href='addForm.html'"
 		                    th:onclick="|location.href='@{/strategy/add}'|"
 		                    type="button" >작성</button>
-		</div>
+		</div> -->
+		<hr><hr>
 		
 		<div class="border border-secondary p-3 rounded text-left">
 			<ul>
 				<li>소환사 : <span th:text="${MyRiotAccount.name}"><</span></li>
 				<li>LV : <span th:text="${MyRiotAccount.summonerLevel}"></span></li>
-				<li><span th:text="${MyLeague[0].tier}"></span> <span
-					th:text="${MyLeague[0].rank}"></span></li>
+				<li><span th:text="${MyLeague.tier}"></span> <span
+					th:text="${MyLeague.tierRank}"></span></li>
 				<li>
-				<span th:text="${MyLeague[0].wins}"></span> <span th:text="승"></span>
-				 <span th:text="${MyLeague[0].losses}"></span> <span th:text="패"></span></li>
+				<span th:text="${MyLeague.wins}"></span> <span th:text="승"></span>
+				 <span th:text="${MyLeague.losses}"></span> <span th:text="패"></span></li>
 			</ul>
 		</div>
 		<br>
