@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.solo.LoLStrategy.common.board.BoardService;
-import com.solo.LoLStrategy.common.champions.Champions;
+import com.solo.LoLStrategy.common.champion.Champions;
 import com.solo.LoLStrategy.strategy.DTO.StrategyBoard;
 
 import lombok.extern.slf4j.Slf4j;

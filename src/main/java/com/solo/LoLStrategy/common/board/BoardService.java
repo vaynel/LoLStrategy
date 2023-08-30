@@ -1,13 +1,12 @@
 package com.solo.LoLStrategy.common.board;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.solo.LoLStrategy.strategy.StrategyBoardRepository;
-import com.solo.LoLStrategy.strategy.DTO.StrategyBoardDTO;
+import com.solo.LoLStrategy.strategy.DTO.StrategyBoard;
 
 @Service
 public class BoardService {
@@ -18,12 +17,12 @@ public class BoardService {
 	@Autowired
 	StrategyBoardRepository strategyBoardRepository;
 
-	public void saveBoard(StrategyBoardDTO board) {
+	public void saveBoard(StrategyBoard board) {
 		boardRepository.save(board);
 			
 	}
 
-	public List<StrategyBoardDTO> findBoardByChampion(String Champion) {
+	public List<StrategyBoard> findBoardByChampion(String Champion) {
 		
 		return strategyBoardRepository.findAllStrategyBoardByChampion(Champion);
 	}
