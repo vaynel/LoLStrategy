@@ -38,6 +38,7 @@ public class StrategyController {
 		model.addAttribute("champion", champion);
 		model.addAttribute("BoardList", BoardList);
 		model.addAttribute("champions", champions);
+		model.addAttribute("where","strategy");
 		return "strategy.html";
 	}
 	

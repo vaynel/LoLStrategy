@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+	crossorigin="anonymous" />
+</head>
+<link rel="stylesheet" th:href="@{/css/main.css}">
+<title>챔피언 공략</title>
+</head>
+<body>
+<th:block th:replace ="header :: headerFragment"></th:block>
+
+
+	<div class="container" style="max-width: 1000px">
+		<div class="py-5 text-center row">
+			<h2 th:text="${champion} "></h2>
+			<h2>장인</h2>
+		</div>
+		<th:block th:replace="champions :: championsFragment"></th:block>
+	</div>
+
+</body>
+</html>

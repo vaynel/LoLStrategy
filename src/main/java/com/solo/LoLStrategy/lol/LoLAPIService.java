@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LoLAPIService {
 
-	private static String key = "RGAPI-bc806e16-ab7d-4b17-b706-44deb8c95662";
+	private static String key = "RGAPI-e6b92ec7-6276-4646-a771-e3629a625a34";
 
 	public void get() {
 		// webClient 기본 설정
