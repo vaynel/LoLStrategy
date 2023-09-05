@@ -34,7 +34,7 @@ public class LoLStrategyApplication {
 			UserService userService) {
 		return (args) -> {
 			// 시즌 설정하기 
-			seosonRepository.save(setSeoson()); 
+			//seosonRepository.save(setSeoson()); 
 			// 유저 한명 생성하기
 			
 			Optional<User> user = userRepository.findById(2);

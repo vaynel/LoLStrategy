@@ -290,4 +290,23 @@ public class UserService {
 		return recentlyMatch.equals(dataMatchId.getMatchId());
 	}
 
+
+	// 소환사 검색하기 
+	public Summoner searchSummoner(String summoner) {
+		Optional<Summoner> DBsummoner = Optional.ofNullable(summonerRepository.findSummonerByName(summoner));
+		if(DBsummoner.isEmpty()) {
+			log.info(summoner+"가 DB에 없기에 새로 등록합니다.");
+			Summoner newSummoner = lolAPIService.getSummonerV4ById(summoner);
+			summonerRepository.save(newSummoner);
+			MatchList match = new MatchList();
+			match.setSummoner(newSummoner);
+			matchListRepoistory.save(match);
+			log.info(newSummoner.getName()+"등록완료");
+			return newSummoner;
+		}
+		log.info(DBsummoner+"를 반환합니다.");
+		return DBsummoner.get();
+		
+	}
+
 }

@@ -1,10 +1,7 @@
 package com.solo.LoLStrategy.strategy;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -17,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.mysql.cj.x.protobuf.MysqlxCrud.Order.Direction;
 import com.solo.LoLStrategy.common.board.BoardService;
 import com.solo.LoLStrategy.common.champions.Champions;
 import com.solo.LoLStrategy.strategy.DTO.StrategyBoard;
