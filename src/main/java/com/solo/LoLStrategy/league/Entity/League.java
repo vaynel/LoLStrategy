@@ -1,7 +1,6 @@
 package com.solo.LoLStrategy.league.Entity;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -9,7 +8,6 @@ import javax.persistence.ManyToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,9 +26,14 @@ public class League {
 	private Integer id;
 	private String tier;
 	private String tierRank;
-	private String season;
 	private Integer leaguePoints;
+	private Integer wins;
+	private Integer losses;
 
+	@ManyToOne
+	@JoinColumn(name = "SEOSON_ID")
+	private Seoson season;
+	
 	@ManyToOne
 	@JoinColumn(name = "SUMMONER_ID")
 	private Summoner summoner;

@@ -6,10 +6,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.solo.LoLStrategy.league.Entity.League;
 import com.solo.LoLStrategy.league.Entity.Summoner;
 import com.solo.LoLStrategy.lol.LoLAPIService;
-import com.solo.LoLStrategy.lol.VO.LeagueEntryDTO;
 import com.solo.LoLStrategy.lol.VO.ParticipantDTO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -45,9 +46,15 @@ public class UserController {
 
 	@RequestMapping(value = "/main", method = RequestMethod.GET)
 	public String main(Authentication a, Model model) {
+		Summoner MyRiotAccount = userService.getSummonerByGameId(a.getName()); // 소환사 정보 
+		League MyLeague = userService.getLeagueBySummoner(MyRiotAccount); // 소환사의 리그 정보
 		
-		Summoner MyRiotAccount = lolAPIService.getSummonerV4ById(a.getName()); // 소환사 정보 
-		LeagueEntryDTO[] MyLeague = lolAPIService.getLeagueV4BySummonerId(MyRiotAccount.getId()); // 소환사의 리그 정보
+		if(userService.checkRecentlyMatch(MyRiotAccount)) {
+			log.info(MyRiotAccount.getName()+"의 최신정보 업데이트");
+			userService.updateSummonerData(MyRiotAccount); // 챔피언 사용정보 업데이트			
+		}
+		
+		// 이부분들을 고쳐야합니다... 너무 LOLAPI를 불러와서 제한에 걸리고, api를 사용하니 너무 느립니다. 
 		String[] MatchList = lolAPIService.returnMatchList(MyRiotAccount.getPuuid()); // 소환사가 최근에 한 게임 매치 List(20개)
 		ParticipantDTO[] myParticipants=userService.getMatchListDetails(MatchList,MyRiotAccount);
 		String recentlyChampions = userService.returnRecentlyChampions(myParticipants);
@@ -64,6 +71,29 @@ public class UserController {
 	public String login() {
 		log.info("login을 하십시오");
 		return "login.html";
+	}
+	
+	@RequestMapping(value = "/search", method = RequestMethod.GET)
+	public String searchSummoner(@RequestParam(value = "summoner") String summoner,Model model) {
+		log.info(summoner+"를 검색합니다.");
+		Summoner searchSummoner = userService.searchSummoner(summoner);
+		League MyLeague = userService.getLeagueBySummoner(searchSummoner);
+		if(userService.checkRecentlyMatch(searchSummoner)) {
+			log.info(searchSummoner.getName()+"의 최신정보 업데이트");
+			userService.updateSummonerData(searchSummoner); // 챔피언 사용정보 업데이트			
+		}
+		
+		// 이부분들을 고쳐야합니다... 너무 LOLAPI를 불러와서 제한에 걸리고, api를 사용하니 너무 느립니다. 
+		String[] MatchList = lolAPIService.returnMatchList(searchSummoner.getPuuid()); // 소환사가 최근에 한 게임 매치 List(20개)
+		ParticipantDTO[] myParticipants=userService.getMatchListDetails(MatchList,searchSummoner);
+		String recentlyChampions = userService.returnRecentlyChampions(myParticipants);
+		
+		model.addAttribute("MyRiotAccount", searchSummoner);
+		model.addAttribute("MyLeague", MyLeague);
+		model.addAttribute("MatchList", MatchList); 
+		model.addAttribute("MyParticipants", myParticipants);
+		model.addAttribute("recentlyChampions", recentlyChampions);
+		return "main.html";
 	}
 
 }
