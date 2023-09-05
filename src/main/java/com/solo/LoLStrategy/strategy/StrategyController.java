@@ -12,7 +12,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.solo.LoLStrategy.common.board.BoardService;
 import com.solo.LoLStrategy.common.champions.Champions;
@@ -36,37 +38,34 @@ public class StrategyController {
 		model.addAttribute("champion", champion);
 		model.addAttribute("BoardList", BoardList);
 		model.addAttribute("champions", champions);
-		
-		
 		return "strategy.html";
 	}
 	
-	@RequestMapping(value = "/strategy/{champion}/detail/{id}")
-	public String boardDetail(@PathVariable("champion")String champion,@PathVariable("id")String id,Model model) {
+	@RequestMapping(value = "/strategy/{champion}/detail")
+	public String boardDetail(@PathVariable("champion")String champion,@RequestParam("id")Integer id,Model model) {
 		StrategyBoard board = boardService.findBoardById(id);
+		model.addAttribute("board", board);
 		
 		
 		return "strategyBoard.html";
 	}
 	
 	@RequestMapping(value = "/strategy/add",method = RequestMethod.GET)
-	public String addStrategy() {
-		log.info("공략 작성");
-		
+	public String addStrategy(@RequestParam("champion") String champion,Model model) {
+		log.info(champion+" 공략 작성");
+		model.addAttribute("champion", champion);
 		return "addForm.html";
 	}
 	
 	@RequestMapping(value = "/strategy/add",method = RequestMethod.POST)
 	@ResponseBody
-	public String addPostStrategy(StrategyBoard board,Authentication a)  {
+	public RedirectView addPostStrategy(StrategyBoard board,Authentication a,@RequestParam("champion") String champion)  {
 		log.info("게시글 등록하기");
 		board.setWriter(a.getName());
-		board.setChampion("vayne");
+		board.setChampion(champion);
 		board.setDate(new Date());
-		log.info(board.toString());
 		boardService.saveBoard(board);
-		
-		return "strategy.html"; 
+		return new RedirectView("/strategy/"+champion);
 	}
 	
 	

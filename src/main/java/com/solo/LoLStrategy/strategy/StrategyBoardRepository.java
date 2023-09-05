@@ -13,5 +13,5 @@ public interface StrategyBoardRepository extends JpaRepository<StrategyBoard, In
 	
 	List<StrategyBoard> findAllStrategyBoardByChampion(String champion);
 
-	StrategyBoard findStrategyBoardById(String id);
+	StrategyBoard findStrategyBoardById(Integer id);
 }
