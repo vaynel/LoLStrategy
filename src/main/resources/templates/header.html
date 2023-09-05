@@ -13,7 +13,7 @@
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
           <li><a href="#" class="nav-link px-2 text-secondary"></a></li>
           <li><a href="#" class="nav-link px-2 text-white">챔피언 장인</a></li>
-          <li><a th:onclick="|location.href='@{/strategy/vayne}'|" class="nav-link px-2 text-white">챔피언 공략</a></li>
+          <li><a href="#" th:onclick="|location.href='@{/strategy/vayne}'|" class="nav-link px-2 text-white">챔피언 공략</a></li>
           <li><a href="#" class="nav-link px-2 text-white">라인별 운영 게시판</a></li>
           <li><a href="#" class="nav-link px-2 text-white">토론장</a></li>
         </ul>
@@ -21,10 +21,14 @@
         <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" th:action="@{/search}" method="get" >
           <input type="text" th:name="summoner" class="form-control form-control-dark"  placeholder="Search..." aria-label="Search">
         </form>
-
+		<div sec:authorize="isAuthenticated()" ></div>
+		
         <div class="text-end">
-          <button type="button" th:onclick="|location.href='@{/login}'|" class="btn btn-outline-light me-2">Login</button>
+         <button sec:authorize="!isAuthenticated()" type="button" th:onclick="|location.href='@{/login}'|" class="btn btn-outline-light me-2">Login</button>
+         <form th:action="@{/logout}" method="POST"> 
+         <button sec:authorize="isAuthenticated()" type="submit" class="btn btn-outline-light me-2">Logout</button>
          <button type="button" th:onclick="|location.href='@{/signup}'|" class="btn btn-primary">SignUp</button>
+         </form>
         </div>
       </div>
     </div>

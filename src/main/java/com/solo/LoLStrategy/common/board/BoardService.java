@@ -33,4 +33,8 @@ public class BoardService {
 		return strategyBoardRepository.findStrategyBoardById(id);
 	}
 
+	public void deleteStrategyBoard(Integer id) {
+		boardRepository.deleteById(id);
+	}
+
 }

@@ -71,6 +71,34 @@ public class StrategyController {
 
 	
 	
+	@RequestMapping(value = "/strategy/delete")
+	public RedirectView deleteStrategy(@RequestParam("champion") String champion,@RequestParam("id") Integer id) {
+		log.info("게시글 삭제하기");
+		try {
+			boardService.deleteStrategyBoard(id);			
+		} catch (Exception e) {
+			log.info("게시글 삭제시 오류 발생함");
+		}
+		return new RedirectView("/strategy/"+champion); 
+	}
+	
+	@RequestMapping(value = "/strategy/update")
+	public RedirectView updateStrategy(@RequestParam("champion") String champion,@RequestParam("id") Integer id) {
+		log.info("게시글 수정하기");
+		try {
+			//boardService.updateStrategyBoard(id);			
+		} catch (Exception e) {
+			
+			
+			
+			log.info("게시글 삭제시 오류 발생함");
+		}
+		return new RedirectView("/strategy/"+champion); 
+	}
+	
+	
+	
+	
 	
 
 }
